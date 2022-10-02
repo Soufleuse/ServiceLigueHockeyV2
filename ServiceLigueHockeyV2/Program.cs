@@ -15,13 +15,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ServiceLigueHockeyContext>(options => {
-    var connectionString = builder.Configuration.GetConnectionString("mysqlConnection");
+    var connectionString = builder.Configuration.GetConnectionString("sqlServerConnection");
     if(string.IsNullOrEmpty(connectionString))
     {
         throw new System.Exception("La chaine de connexion est vide.");
     }
 
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    options.UseSqlServer(connectionString);
 });
 
 builder.Services.AddCors(options => {

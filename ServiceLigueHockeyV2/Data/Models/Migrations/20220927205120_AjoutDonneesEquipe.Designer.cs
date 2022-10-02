@@ -2,127 +2,170 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServiceLigueHockey.Data;
 
 #nullable disable
 
-namespace ServiceLigueHockeyV2.Data.Migrations
+namespace ServiceLigueHockeyV2.Data.Models.Migrations
 {
     [DbContext(typeof(ServiceLigueHockeyContext))]
-    [Migration("20220819171438_Initial")]
-    partial class Initial
+    [Migration("20220927205120_AjoutDonneesEquipe")]
+    partial class AjoutDonneesEquipe
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.8")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("ServiceLigueHockey.Data.Models.EquipeBd", b =>
                 {
-                    b.Property<int>("No_Equipe")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("Annee_debut")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AnneeDebut")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Annee_fin")
+                    b.Property<int?>("AnneeFin")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Est_Devenue_Equipe")
+                    b.Property<int?>("EstDevenueEquipe")
                         .HasColumnType("int");
 
-                    b.Property<string>("Nom_Equipe")
+                    b.Property<string>("NomEquipe")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Ville")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("No_Equipe");
+                    b.HasKey("Id");
 
                     b.ToTable("Equipe", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AnneeDebut = 1989,
+                            NomEquipe = "Canadiensssss",
+                            Ville = "Mourial"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AnneeDebut = 1984,
+                            NomEquipe = "Bruns",
+                            Ville = "Albany"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AnneeDebut = 1976,
+                            NomEquipe = "Harfangs",
+                            Ville = "Hartford"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AnneeDebut = 1999,
+                            NomEquipe = "Boulettes",
+                            Ville = "Victoriaville"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AnneeDebut = 2001,
+                            NomEquipe = "Rocher",
+                            Ville = "Percé"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AnneeDebut = 1986,
+                            NomEquipe = "Pierre",
+                            Ville = "Rochester"
+                        });
                 });
 
             modelBuilder.Entity("ServiceLigueHockey.Data.Models.EquipeJoueurBd", b =>
                 {
-                    b.Property<int>("No_Equipe")
+                    b.Property<int>("EquipeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("No_Joueur")
+                    b.Property<int>("JoueurId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("date_debut_avec_equipe")
-                        .HasColumnType("datetime(6)");
+                    b.Property<DateTime>("DateDebutAvecEquipe")
+                        .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("date_fin_avec_equipe")
-                        .HasColumnType("datetime(6)");
+                    b.Property<DateTime?>("DateFinAvecEquipe")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("equipeBdNo_Equipe")
-                        .HasColumnType("int");
-
-                    b.Property<int>("joueurBdNo_Joueur")
-                        .HasColumnType("int");
-
-                    b.Property<short>("no_dossard")
+                    b.Property<short>("NoDossard")
                         .HasColumnType("smallint");
 
-                    b.HasKey("No_Equipe", "No_Joueur", "date_debut_avec_equipe");
+                    b.HasKey("EquipeId", "JoueurId", "DateDebutAvecEquipe");
 
-                    b.HasIndex("equipeBdNo_Equipe");
-
-                    b.HasIndex("joueurBdNo_Joueur");
+                    b.HasIndex("JoueurId");
 
                     b.ToTable("EquipeJoueur", (string)null);
                 });
 
             modelBuilder.Entity("ServiceLigueHockey.Data.Models.JoueurBd", b =>
                 {
-                    b.Property<int>("No_Joueur")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Date_Naissance")
-                        .HasColumnType("datetime(6)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("DateNaissance")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Nom")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Pays_origine")
+                    b.Property<string>("PaysOrigine")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Prenom")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Ville_naissance")
+                    b.Property<string>("VilleNaissance")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("No_Joueur");
+                    b.HasKey("Id");
 
                     b.ToTable("Joueur", (string)null);
                 });
 
             modelBuilder.Entity("ServiceLigueHockey.Data.Models.StatsJoueurBd", b =>
                 {
-                    b.Property<int>("No_Joueur")
+                    b.Property<int>("JoueurId")
                         .HasColumnType("int");
 
-                    b.Property<int>("No_Equipe")
+                    b.Property<int>("EquipeId")
                         .HasColumnType("int");
 
                     b.Property<short>("AnneeStats")
@@ -138,7 +181,7 @@ namespace ServiceLigueHockeyV2.Data.Migrations
                         .HasColumnType("smallint");
 
                     b.Property<double>("MinutesJouees")
-                        .HasColumnType("double");
+                        .HasColumnType("float");
 
                     b.Property<short>("NbButs")
                         .HasColumnType("smallint");
@@ -167,52 +210,49 @@ namespace ServiceLigueHockeyV2.Data.Migrations
                     b.Property<short>("Victoires")
                         .HasColumnType("smallint");
 
-                    b.Property<int>("equipeBdNo_Equipe")
-                        .HasColumnType("int");
+                    b.HasKey("JoueurId", "EquipeId", "AnneeStats");
 
-                    b.HasKey("No_Joueur", "No_Equipe", "AnneeStats");
-
-                    b.HasIndex("equipeBdNo_Equipe");
+                    b.HasIndex("EquipeId");
 
                     b.ToTable("StatsJoueur", (string)null);
                 });
 
             modelBuilder.Entity("ServiceLigueHockey.Data.Models.EquipeJoueurBd", b =>
                 {
-                    b.HasOne("ServiceLigueHockey.Data.Models.EquipeBd", "equipeBd")
+                    b.HasOne("ServiceLigueHockey.Data.Models.EquipeBd", "Equipe")
                         .WithMany("listeEquipeJoueur")
-                        .HasForeignKey("equipeBdNo_Equipe")
+                        .HasForeignKey("EquipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServiceLigueHockey.Data.Models.JoueurBd", "joueurBd")
+                    b.HasOne("ServiceLigueHockey.Data.Models.JoueurBd", "Joueur")
                         .WithMany("listeEquipeJoueur")
-                        .HasForeignKey("joueurBdNo_Joueur")
+                        .HasForeignKey("JoueurId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("equipeBd");
+                    b.Navigation("Equipe");
 
-                    b.Navigation("joueurBd");
+                    b.Navigation("Joueur");
                 });
 
             modelBuilder.Entity("ServiceLigueHockey.Data.Models.StatsJoueurBd", b =>
                 {
+                    b.HasOne("ServiceLigueHockey.Data.Models.EquipeBd", "Equipe")
+                        .WithMany()
+                        .HasForeignKey("EquipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ServiceLigueHockey.Data.Models.JoueurBd", "Joueur")
                         .WithMany("listeStatsJoueur")
-                        .HasForeignKey("No_Joueur")
+                        .HasForeignKey("JoueurId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServiceLigueHockey.Data.Models.EquipeBd", "equipeBd")
-                        .WithMany()
-                        .HasForeignKey("equipeBdNo_Equipe")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Equipe");
 
                     b.Navigation("Joueur");
-
-                    b.Navigation("equipeBd");
                 });
 
             modelBuilder.Entity("ServiceLigueHockey.Data.Models.EquipeBd", b =>

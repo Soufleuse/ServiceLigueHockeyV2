@@ -2,30 +2,35 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServiceLigueHockey.Data;
 
 #nullable disable
 
-namespace ServiceLigueHockeyV2.Data.Migrations
+namespace ServiceLigueHockeyV2.Data.Models.Migrations
 {
     [DbContext(typeof(ServiceLigueHockeyContext))]
-    [Migration("20220822192634_AjoutDonnees15h26")]
-    partial class AjoutDonnees15h26
+    [Migration("20220927203339_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.8")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("ServiceLigueHockey.Data.Models.EquipeBd", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("AnneeDebut")
                         .HasColumnType("int");
@@ -39,12 +44,12 @@ namespace ServiceLigueHockeyV2.Data.Migrations
                     b.Property<string>("NomEquipe")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Ville")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -60,10 +65,10 @@ namespace ServiceLigueHockeyV2.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateDebutAvecEquipe")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateFinAvecEquipe")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<short>("NoDossard")
                         .HasColumnType("smallint");
@@ -81,28 +86,30 @@ namespace ServiceLigueHockeyV2.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
                     b.Property<DateTime>("DateNaissance")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Nom")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PaysOrigine")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Prenom")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("VilleNaissance")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -130,7 +137,7 @@ namespace ServiceLigueHockeyV2.Data.Migrations
                         .HasColumnType("smallint");
 
                     b.Property<double>("MinutesJouees")
-                        .HasColumnType("double");
+                        .HasColumnType("float");
 
                     b.Property<short>("NbButs")
                         .HasColumnType("smallint");
