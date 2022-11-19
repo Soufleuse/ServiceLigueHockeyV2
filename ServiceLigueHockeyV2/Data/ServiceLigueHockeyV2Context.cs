@@ -26,13 +26,13 @@ namespace ServiceLigueHockey.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //var connectionString = this.Configuration.GetConnectionString("mysqlConnection");
-                var connectionString = this.Configuration.GetConnectionString("sqlServerConnection");
+                var connectionString = this.Configuration.GetConnectionString("mysqlConnection");
+                //var connectionString = this.Configuration.GetConnectionString("winServer2022Connection");
                 if(string.IsNullOrEmpty(connectionString))
                     throw new System.Exception("La chaine de connexion est vide.");
 
-                //optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-                optionsBuilder.UseSqlServer(connectionString);
+                optionsBuilder.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30)));
+                //optionsBuilder.UseSqlServer(connectionString);
             }
         }
 

@@ -7,7 +7,7 @@ using ServiceLigueHockey.Data.Models.Dto;
 namespace ServiceLigueHockey.Data.Controllers
 {
     /*
-     * Controleur pour EquipeBd
+     * Controleur pour Equipe
      */
     [ApiController]
     [Route("api/[controller]")]
@@ -20,7 +20,7 @@ namespace ServiceLigueHockey.Data.Controllers
             _context = context;
         }
 
-        // GET: api/EquipeBds
+        // GET: api/Equipe
         [HttpGet]
         public ActionResult<IQueryable<EquipeDto>> GetEquipeDto()
         {
@@ -37,7 +37,7 @@ namespace ServiceLigueHockey.Data.Controllers
             return Ok(listeEquipe);
         }
 
-        // GET: api/EquipeBds/5
+        // GET: api/Equipe/5
         [HttpGet("{id}")]
         public async Task<ActionResult<EquipeDto>> GetEquipeDto(int id)
         {
@@ -61,10 +61,26 @@ namespace ServiceLigueHockey.Data.Controllers
             return Ok(equipeDto);
         }
 
-        // PUT: api/EquipeBds/5
+        // GET: api/Equipe/nomequipeville/5
+        [HttpGet("nomequipeville/{id}")]
+        public async Task<ActionResult<string>> GetNomEquipe(int id)
+        {
+            var equipeBd = await _context.equipe.FindAsync(id);
+
+            if (equipeBd == null)
+            {
+                return NotFound();
+            }
+
+            var nomEquipeVille = string.Concat(equipeBd.NomEquipe, " ", equipeBd.Ville);
+
+            return Ok(nomEquipeVille);
+        }
+
+        // PUT: api/Equipe/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEquipeBd(int id, EquipeDto equipeDto)
+        public async Task<IActionResult> PutEquipe(int id, EquipeDto equipeDto)
         {
             if (id != equipeDto.Id)
             {
@@ -102,7 +118,7 @@ namespace ServiceLigueHockey.Data.Controllers
             return NoContent();
         }
 
-        // POST: api/EquipeBds
+        // POST: api/Equipe
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<EquipeDto>> PostEquipeDto(EquipeDto equipe)
@@ -125,9 +141,9 @@ namespace ServiceLigueHockey.Data.Controllers
             return CreatedAtAction("PostEquipeDto", equipe);
         }
 
-        // DELETE: api/EquipeBds/5
+        // DELETE: api/Equipe/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEquipeBd(int id)
+        public async Task<IActionResult> DeleteEquipe(int id)
         {
             var equipeBd = await _context.equipe.FindAsync(id);
             if (equipeBd == null)
