@@ -15,32 +15,32 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.WebHost.ConfigureKestrel(serverOption =>
+// Début décommenter pour déployer sur Ubuntu Server
+// Laisser commenté pour tester en debug
+/*builder.WebHost.ConfigureKestrel(serverOption =>
 {
     serverOption.Listen(IPAddress.Parse("10.0.0.5"), 5000);
     serverOption.Listen(IPAddress.Parse("127.0.0.1"), 5000);
-});
-/*builder.Services.Configure<ForwardedHeadersOptions>(option =>
-{
-    option.KnownProxies.Add(IPAddress.Parse("10.0.0.5"));
 });*/
+// Fin décommenter pour déployer sur Ubuntu Server
 
 builder.Services.AddDbContext<ServiceLigueHockeyContext>(options => {
-    var connectionString =  builder.Configuration.GetConnectionString("mysqlConnection");
+    //var connectionString =  builder.Configuration.GetConnectionString("mysqlConnection");
+    var connectionString = builder.Configuration.GetConnectionString("sqlServerConnection");
     //var connectionString = builder.Configuration.GetConnectionString("winServer2022Connection");
-    if(string.IsNullOrEmpty(connectionString))
+    if (string.IsNullOrEmpty(connectionString))
     {
         throw new System.Exception("La chaine de connexion est vide.");
     }
 
-    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30)));
-    //options.UseSqlServer(connectionString);
+    //options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30)));
+    options.UseSqlServer(connectionString);
 });
 
 builder.Services.AddCors(options => {
     options.AddPolicy(name: monAllowSpecificOrigin,
         builder => {
-            builder.WithOrigins("http://localhost:4900", "http://10.0.0.*", "https://localhost:4900", "https://localhost:7166", "https://127.0.0.1:4900");
+            builder.WithOrigins("http://localhost:4900", "http://10.0.0.*", "https://10.0.0.*", "https://localhost:4900", "https://localhost:7166", "https://127.0.0.1:4900");
             builder.WithHeaders("Content-Type");
             builder.WithMethods("*");
             //builder.WithMethods("POST","GET","PUT","OPTIONS");
