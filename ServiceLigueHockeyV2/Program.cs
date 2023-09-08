@@ -25,8 +25,8 @@ builder.Services.AddSwaggerGen();
 // Fin décommenter pour déployer sur Ubuntu Server
 
 builder.Services.AddDbContext<ServiceLigueHockeyContext>(options => {
-    //var connectionString =  builder.Configuration.GetConnectionString("mysqlConnection");
-    var connectionString = builder.Configuration.GetConnectionString("sqlServerConnection");
+    var connectionString =  builder.Configuration.GetConnectionString("mysqlConnection");
+    //var connectionString = builder.Configuration.GetConnectionString("sqlServerConnection");
     //var connectionString = builder.Configuration.GetConnectionString("winServer2022Connection");
     if (string.IsNullOrEmpty(connectionString))
     {
