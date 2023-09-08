@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
 using ServiceLigueHockey.Data;
-//using Pomelo.EntityFrameworkCore.MySql.Extensions;
+using Pomelo.EntityFrameworkCore.MySql.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,8 +33,8 @@ builder.Services.AddDbContext<ServiceLigueHockeyContext>(options => {
         throw new System.Exception("La chaine de connexion est vide.");
     }
 
-    //options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30)));
-    options.UseSqlServer(connectionString);
+    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30)));
+    //options.UseSqlServer(connectionString);
 });
 
 builder.Services.AddCors(options => {
