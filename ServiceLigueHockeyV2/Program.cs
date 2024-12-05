@@ -40,14 +40,14 @@ builder.Services.AddDbContext<ServiceLigueHockeyContext>(options => {
 builder.Services.AddCors(options => {
     options.AddPolicy(name: monAllowSpecificOrigin,
         builder => {
-            builder.WithOrigins("http://localhost:4900", "http://10.0.0.*", "https://10.0.0.*", "https://localhost:4900", "https://localhost:7166", "https://127.0.0.1:4900");
-            builder.WithHeaders("Content-Type");
-            builder.WithMethods("*");
+            builder.WithOrigins("http://localhost:4900").AllowAnyHeader().AllowAnyMethod();
+            //builder.WithHeaders("Content-Type", "Access-Control-Allow-Origin: http://localhost:4900");
             //builder.WithMethods("POST","GET","PUT","OPTIONS");
         });
 });
 
 var app = builder.Build();
+app.UseCors(monAllowSpecificOrigin);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
