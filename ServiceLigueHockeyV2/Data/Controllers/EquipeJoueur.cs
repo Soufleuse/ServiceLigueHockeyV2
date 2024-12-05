@@ -23,37 +23,46 @@ namespace ServiceLigueHockey.Data.Controllers
             _context = context;
         }
 
-        // GET: api/equipeJoueurBds
-        [HttpGet]
-        public ActionResult<IList<EquipeJoueurDto>> GetEquipeJoueur()
+
+        // GET: api/equipeJoueurBds/parequipe/1
+        [HttpGet("parequipe/{EquipeId}")]
+        public ActionResult<IList<EquipeJoueurDto>> GetEquipeJoueurParEquipe(int equipeId)
         {
             var listeEquipeJoueur = from item in _context.equipeJoueur
+                                    join unJoueur in _context.joueur on item.JoueurId equals unJoueur.Id
+                                    where item.EquipeId == equipeId
                                     select new EquipeJoueurDto
                                     {
                                         EquipeId = item.EquipeId,
                                         JoueurId = item.JoueurId,
                                         NoDossard = item.NoDossard,
                                         DateDebutAvecEquipe = item.DateDebutAvecEquipe,
-                                        DateFinAvecEquipe = item.DateFinAvecEquipe
+                                        DateFinAvecEquipe = item.DateFinAvecEquipe,
+                                        PrenomNomJoueur = unJoueur.Prenom + " " + unJoueur.Nom
                                     };
 
-            var retour = new List<EquipeJoueurDto>();
-            foreach (var item in listeEquipeJoueur)
-            {
-                var unJoueur = _context.joueur.Find(item.JoueurId);
+            var retour = listeEquipeJoueur.ToList();
 
-                if(unJoueur == null) unJoueur = new JoueurBd();
+            return Ok(retour);
+        }
 
-                retour.Add(new EquipeJoueurDto
-                {
-                    EquipeId = item.EquipeId,
-                    JoueurId = item.JoueurId,
-                    NoDossard = item.NoDossard,
-                    PrenomNomJoueur = unJoueur.Prenom + " " + unJoueur.Nom,
-                    DateDebutAvecEquipe = item.DateDebutAvecEquipe,
-                    DateFinAvecEquipe = item.DateFinAvecEquipe
-                });
-            }
+        // GET: api/equipeJoueur
+        [HttpGet]
+        public ActionResult<IList<EquipeJoueurDto>> GetEquipeJoueur()
+        {
+            var listeEquipeJoueur = from item in _context.equipeJoueur
+                                    join unJoueur in _context.joueur on item.JoueurId equals unJoueur.Id
+                                    select new EquipeJoueurDto
+                                    {
+                                        EquipeId = item.EquipeId,
+                                        JoueurId = item.JoueurId,
+                                        NoDossard = item.NoDossard,
+                                        DateDebutAvecEquipe = item.DateDebutAvecEquipe,
+                                        DateFinAvecEquipe = item.DateFinAvecEquipe,
+                                        PrenomNomJoueur = unJoueur.Prenom + " " + unJoueur.Nom,
+                                    };
+
+            var retour = listeEquipeJoueur.ToList();
 
             return Ok(retour);
         }
@@ -63,6 +72,7 @@ namespace ServiceLigueHockey.Data.Controllers
         public ActionResult<EquipeJoueurDto> GetEquipeJoueurBd(int equipeId, int joueurId)
         {
             var lecture = from item in _context.equipeJoueur
+                             join unJoueur in _context.joueur on item.JoueurId equals unJoueur.Id
                              where item.EquipeId == equipeId
                              where item.JoueurId == joueurId
                              select new EquipeJoueurDto
@@ -71,7 +81,8 @@ namespace ServiceLigueHockey.Data.Controllers
                                  JoueurId = item.JoueurId,
                                  NoDossard = item.NoDossard,
                                  DateDebutAvecEquipe = item.DateDebutAvecEquipe,
-                                 DateFinAvecEquipe = item.DateFinAvecEquipe
+                                 DateFinAvecEquipe = item.DateFinAvecEquipe,
+                                 PrenomNomJoueur = unJoueur.Prenom + " " + unJoueur.Nom
                              };
 
             if (lecture == null)
@@ -79,22 +90,7 @@ namespace ServiceLigueHockey.Data.Controllers
                 return NotFound();
             }
 
-            var listeAlignement = new List<EquipeJoueurDto>();
-            foreach (var item in lecture)
-            {
-                var unJoueur = _context.joueur.Find(item.JoueurId);
-                if (unJoueur == null) unJoueur = new JoueurBd();
-
-                listeAlignement.Add(new EquipeJoueurDto
-                {
-                    EquipeId = item.EquipeId,
-                    JoueurId = item.JoueurId,
-                    NoDossard = item.NoDossard,
-                    DateDebutAvecEquipe = item.DateDebutAvecEquipe,
-                    DateFinAvecEquipe = item.DateFinAvecEquipe,
-                    PrenomNomJoueur = unJoueur.Prenom + " " + unJoueur.Nom
-                });
-            }
+            var listeAlignement = lecture.ToList();
 
             return Ok(listeAlignement);
         }
