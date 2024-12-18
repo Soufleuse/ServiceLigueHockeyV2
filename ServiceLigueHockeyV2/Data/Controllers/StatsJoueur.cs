@@ -70,7 +70,7 @@ namespace ServiceLigueHockey.Data.Controllers
         }
 
         // GET: api/StatsJoueurBds/5/2020
-        [HttpGet("{noJoueur}/{anneeStats}")]
+        [HttpGet("{joueurId}/{anneeStats}")]
         public ActionResult<StatsJoueurDto> GetStatsJoueurBd(int joueurId, short anneeStats)
         {
             var retour = _context.statsJoueurBd

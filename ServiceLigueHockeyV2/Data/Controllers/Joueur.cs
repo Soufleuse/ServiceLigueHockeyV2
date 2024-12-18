@@ -23,7 +23,7 @@ namespace ServiceLigueHockey.Data.Controllers
             _context = context;
         }
 
-        // GET: api/JoueurBds
+        // GET: api/Joueur
         [HttpGet]
         public ActionResult<IQueryable<JoueurDto>> GetJoueurBd()
         {
@@ -40,7 +40,7 @@ namespace ServiceLigueHockey.Data.Controllers
             return Ok(listeJoueur);
         }
 
-        // GET: api/JoueurBds/5
+        // GET: api/Joueur/5
         [HttpGet("{id}")]
         public async Task<ActionResult<JoueurDto>> GetJoueurBd(int id)
         {
@@ -64,7 +64,25 @@ namespace ServiceLigueHockey.Data.Controllers
             return Ok(joueurDto);
         }
 
-        // PUT: api/JoueurBds/5
+        // GET: api/joueur/obtenirprenomnom/6
+        [HttpGet("obtenirprenomnom/{JoueurId}")]
+        public ActionResult<string> GetPrenomNomJoueur(int joueurId)
+        {
+            var lecture = from item in _context.joueur
+                             where item.Id == joueurId
+                             select new string(item.Prenom + " " + item.Nom);
+
+            if (lecture == null)
+            {
+                return NotFound();
+            }
+
+            var strPrenomNomJoueur = lecture.FirstOrDefault();
+
+            return Ok(strPrenomNomJoueur);
+        }
+
+        // PUT: api/Joueur/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutJoueurBd(int id, JoueurBd joueurBd)
@@ -95,7 +113,7 @@ namespace ServiceLigueHockey.Data.Controllers
             return NoContent();
         }
 
-        // POST: api/JoueurBds
+        // POST: api/Joueur
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<JoueurDto>> PostJoueurDto(JoueurDto joueur)
@@ -118,7 +136,7 @@ namespace ServiceLigueHockey.Data.Controllers
             return CreatedAtAction("PostJoueurDto", joueur);
         }
 
-        // DELETE: api/JoueurBds/5
+        // DELETE: api/Joueur/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteJoueurBd(int id)
         {

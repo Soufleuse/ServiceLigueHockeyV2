@@ -77,6 +77,15 @@ namespace ServiceLigueHockey.Data
                 .HasOne("Joueur")
                 .WithMany("listeStatsJoueur")
                 .HasForeignKey("JoueurId");
+            
+            modelBuilder.Entity<StatsEquipeBd>().ToTable("StatsEquipe");
+            modelBuilder.Entity<StatsEquipeBd>().
+                HasKey(o => new {o.EquipeId, o.AnneeStats});
+            modelBuilder.Entity<StatsEquipeBd>().Property(c => c.AnneeStats).IsRequired();
+            modelBuilder.Entity<StatsEquipeBd>()
+                .HasOne("Equipe")
+                .WithMany("listeStatsEquipe")
+                .HasForeignKey("EquipeId");
 
             // Ajout de données
             modelBuilder.Entity<EquipeBd>()
@@ -125,18 +134,58 @@ namespace ServiceLigueHockey.Data
 
             modelBuilder.Entity<StatsJoueurBd>()
                 .HasData(
-                new StatsJoueurBd { EquipeId = 1, JoueurId = 1, AnneeStats = 2020, NbButs = 10, NbPasses = 20, NbPoints = 30, NbPartiesJouees = 25, NbMinutesPenalites = 15, PlusseMoins = 5, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
-                new StatsJoueurBd { EquipeId = 1, JoueurId = 2, AnneeStats = 2020, NbButs = 15, NbPasses = 10, NbPoints = 25, NbPartiesJouees = 25, NbMinutesPenalites = 51, PlusseMoins = -2, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
-                new StatsJoueurBd { EquipeId = 1, JoueurId = 3, AnneeStats = 2020, NbButs = 5, NbPasses = 24, NbPoints = 29, NbPartiesJouees = 25, NbMinutesPenalites = 35, PlusseMoins = 25, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
-                new StatsJoueurBd { EquipeId = 1, JoueurId = 4, AnneeStats = 2020, NbButs = 0, NbPasses = 0, NbPoints = 0, NbPartiesJouees = 25, NbMinutesPenalites = 4, PlusseMoins = 0, ButsAlloues = 53, TirsAlloues = 564, Victoires = 9, Defaites = 2, DefaitesEnProlongation = 6, Nulles = 0, MinutesJouees = 1500 },
-                new StatsJoueurBd { EquipeId = 1, JoueurId = 1, AnneeStats = 2019, NbButs = 1910, NbPasses = 20, NbPoints = 1930, NbPartiesJouees = 82, NbMinutesPenalites = 15, PlusseMoins = 5, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
-                new StatsJoueurBd { EquipeId = 1, JoueurId = 2, AnneeStats = 2019, NbButs = 1915, NbPasses = 10, NbPoints = 1925, NbPartiesJouees = 82, NbMinutesPenalites = 51, PlusseMoins = -2, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
-                new StatsJoueurBd { EquipeId = 1, JoueurId = 3, AnneeStats = 2019, NbButs = 1905, NbPasses = 24, NbPoints = 1929, NbPartiesJouees = 82, NbMinutesPenalites = 35, PlusseMoins = 25, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
-                new StatsJoueurBd { EquipeId = 1, JoueurId = 4, AnneeStats = 2019, NbButs = 1900, NbPasses = 0, NbPoints = 1900, NbPartiesJouees = 82, NbMinutesPenalites = 4, PlusseMoins = 0, ButsAlloues = 53, TirsAlloues = 564, Victoires = 9, Defaites = 2, DefaitesEnProlongation = 6, Nulles = 0, MinutesJouees = 1500 },
-                new StatsJoueurBd { EquipeId = 1, JoueurId = 1, AnneeStats = 2018, NbButs = 1810, NbPasses = 20, NbPoints = 1830, NbPartiesJouees = 65, NbMinutesPenalites = 15, PlusseMoins = 5, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
-                new StatsJoueurBd { EquipeId = 1, JoueurId = 2, AnneeStats = 2018, NbButs = 1815, NbPasses = 10, NbPoints = 1825, NbPartiesJouees = 65, NbMinutesPenalites = 51, PlusseMoins = -2, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
-                new StatsJoueurBd { EquipeId = 1, JoueurId = 3, AnneeStats = 2018, NbButs = 1805, NbPasses = 24, NbPoints = 1829, NbPartiesJouees = 65, NbMinutesPenalites = 35, PlusseMoins = 25, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
-                new StatsJoueurBd { EquipeId = 1, JoueurId = 4, AnneeStats = 2018, NbButs = 1800, NbPasses = 0, NbPoints = 1800, NbPartiesJouees = 65, NbMinutesPenalites = 4, PlusseMoins = 0, ButsAlloues = 53, TirsAlloues = 564, Victoires = 9, Defaites = 2, DefaitesEnProlongation = 6, Nulles = 0, MinutesJouees = 1500 }
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 1, AnneeStats = 2023, NbButs = 10, NbPasses = 20, NbPoints = 30, NbPartiesJouees = 25, NbMinutesPenalites = 15, PlusseMoins = 5, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 2, AnneeStats = 2023, NbButs = 15, NbPasses = 10, NbPoints = 25, NbPartiesJouees = 25, NbMinutesPenalites = 51, PlusseMoins = -2, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 3, AnneeStats = 2023, NbButs = 5, NbPasses = 24, NbPoints = 29, NbPartiesJouees = 25, NbMinutesPenalites = 35, PlusseMoins = 25, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 4, AnneeStats = 2023, NbButs = 0, NbPasses = 0, NbPoints = 0, NbPartiesJouees = 25, NbMinutesPenalites = 4, PlusseMoins = 0, ButsAlloues = 53, TirsAlloues = 564, Victoires = 9, Defaites = 2, DefaitesEnProlongation = 6, Nulles = 0, MinutesJouees = 1500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 1, AnneeStats = 2022, NbButs = 10, NbPasses = 20, NbPoints = 30, NbPartiesJouees = 25, NbMinutesPenalites = 15, PlusseMoins = 5, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 2, AnneeStats = 2022, NbButs = 15, NbPasses = 10, NbPoints = 25, NbPartiesJouees = 25, NbMinutesPenalites = 51, PlusseMoins = -2, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 3, AnneeStats = 2022, NbButs = 5, NbPasses = 24, NbPoints = 29, NbPartiesJouees = 25, NbMinutesPenalites = 35, PlusseMoins = 25, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 4, AnneeStats = 2022, NbButs = 0, NbPasses = 0, NbPoints = 0, NbPartiesJouees = 25, NbMinutesPenalites = 4, PlusseMoins = 0, ButsAlloues = 53, TirsAlloues = 564, Victoires = 9, Defaites = 2, DefaitesEnProlongation = 6, Nulles = 0, MinutesJouees = 1500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 1, AnneeStats = 2021, NbButs = 10, NbPasses = 20, NbPoints = 30, NbPartiesJouees = 25, NbMinutesPenalites = 15, PlusseMoins = 5, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 2, AnneeStats = 2021, NbButs = 15, NbPasses = 10, NbPoints = 25, NbPartiesJouees = 25, NbMinutesPenalites = 51, PlusseMoins = -2, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 3, AnneeStats = 2021, NbButs = 5, NbPasses = 24, NbPoints = 29, NbPartiesJouees = 25, NbMinutesPenalites = 35, PlusseMoins = 25, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 4, AnneeStats = 2021, NbButs = 0, NbPasses = 0, NbPoints = 0, NbPartiesJouees = 25, NbMinutesPenalites = 4, PlusseMoins = 0, ButsAlloues = 53, TirsAlloues = 564, Victoires = 9, Defaites = 2, DefaitesEnProlongation = 6, Nulles = 0, MinutesJouees = 1500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 1, AnneeStats = 2020, NbButs = 10, NbPasses = 20, NbPoints = 30, NbPartiesJouees = 25, NbMinutesPenalites = 15, PlusseMoins = 5, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 2, AnneeStats = 2020, NbButs = 15, NbPasses = 10, NbPoints = 25, NbPartiesJouees = 25, NbMinutesPenalites = 51, PlusseMoins = -2, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 3, AnneeStats = 2020, NbButs = 5, NbPasses = 24, NbPoints = 29, NbPartiesJouees = 25, NbMinutesPenalites = 35, PlusseMoins = 25, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 4, AnneeStats = 2020, NbButs = 0, NbPasses = 0, NbPoints = 0, NbPartiesJouees = 25, NbMinutesPenalites = 4, PlusseMoins = 0, ButsAlloues = 53, TirsAlloues = 564, Victoires = 9, Defaites = 2, DefaitesEnProlongation = 6, Nulles = 0, MinutesJouees = 1500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 1, AnneeStats = 2019, NbButs = 1910, NbPasses = 20, NbPoints = 1930, NbPartiesJouees = 82, NbMinutesPenalites = 15, PlusseMoins = 5, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 2, AnneeStats = 2019, NbButs = 1915, NbPasses = 10, NbPoints = 1925, NbPartiesJouees = 82, NbMinutesPenalites = 51, PlusseMoins = -2, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 3, AnneeStats = 2019, NbButs = 1905, NbPasses = 24, NbPoints = 1929, NbPartiesJouees = 82, NbMinutesPenalites = 35, PlusseMoins = 25, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 4, AnneeStats = 2019, NbButs = 1900, NbPasses = 0, NbPoints = 1900, NbPartiesJouees = 82, NbMinutesPenalites = 4, PlusseMoins = 0, ButsAlloues = 53, TirsAlloues = 564, Victoires = 9, Defaites = 2, DefaitesEnProlongation = 6, Nulles = 0, MinutesJouees = 1500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 1, AnneeStats = 2018, NbButs = 1810, NbPasses = 20, NbPoints = 1830, NbPartiesJouees = 65, NbMinutesPenalites = 15, PlusseMoins = 5, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 2, AnneeStats = 2018, NbButs = 1815, NbPasses = 10, NbPoints = 1825, NbPartiesJouees = 65, NbMinutesPenalites = 51, PlusseMoins = -2, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 3, AnneeStats = 2018, NbButs = 1805, NbPasses = 24, NbPoints = 1829, NbPartiesJouees = 65, NbMinutesPenalites = 35, PlusseMoins = 25, ButsAlloues = 0, TirsAlloues = 0, Victoires = 0, Defaites = 0, DefaitesEnProlongation = 0, Nulles = 0, MinutesJouees = 500 },
+                    new StatsJoueurBd { EquipeId = 1, JoueurId = 4, AnneeStats = 2018, NbButs = 1800, NbPasses = 0, NbPoints = 1800, NbPartiesJouees = 65, NbMinutesPenalites = 4, PlusseMoins = 0, ButsAlloues = 53, TirsAlloues = 564, Victoires = 9, Defaites = 2, DefaitesEnProlongation = 6, Nulles = 0, MinutesJouees = 1500 }
+                );
+            
+            modelBuilder.Entity<StatsEquipeBd>()
+                .HasData(
+                    new StatsEquipeBd { EquipeId = 1, AnneeStats = 2023, NbPartiesJouees = 82, NbVictoires = 50, NbDefaites = 20, NbDefProlo = 12, NbButsPour = 380, NbButsContre = 267 },
+                    new StatsEquipeBd { EquipeId = 2, AnneeStats = 2023, NbPartiesJouees = 82, NbVictoires = 45, NbDefaites = 26, NbDefProlo = 11, NbButsPour = 315, NbButsContre = 287 },
+                    new StatsEquipeBd { EquipeId = 3, AnneeStats = 2023, NbPartiesJouees = 82, NbVictoires = 44, NbDefaites = 30, NbDefProlo = 8, NbButsPour = 300, NbButsContre = 307 },
+                    new StatsEquipeBd { EquipeId = 4, AnneeStats = 2023, NbPartiesJouees = 82, NbVictoires = 34, NbDefaites = 40, NbDefProlo = 8, NbButsPour = 280, NbButsContre = 337 },
+                    new StatsEquipeBd { EquipeId = 1, AnneeStats = 2022, NbPartiesJouees = 82, NbVictoires = 50, NbDefaites = 20, NbDefProlo = 12, NbButsPour = 380, NbButsContre = 267 },
+                    new StatsEquipeBd { EquipeId = 2, AnneeStats = 2022, NbPartiesJouees = 82, NbVictoires = 45, NbDefaites = 26, NbDefProlo = 11, NbButsPour = 315, NbButsContre = 287 },
+                    new StatsEquipeBd { EquipeId = 3, AnneeStats = 2022, NbPartiesJouees = 82, NbVictoires = 44, NbDefaites = 30, NbDefProlo = 8, NbButsPour = 300, NbButsContre = 307 },
+                    new StatsEquipeBd { EquipeId = 4, AnneeStats = 2022, NbPartiesJouees = 82, NbVictoires = 34, NbDefaites = 40, NbDefProlo = 8, NbButsPour = 280, NbButsContre = 337 },
+                    new StatsEquipeBd { EquipeId = 1, AnneeStats = 2021, NbPartiesJouees = 82, NbVictoires = 50, NbDefaites = 20, NbDefProlo = 12, NbButsPour = 380, NbButsContre = 267 },
+                    new StatsEquipeBd { EquipeId = 2, AnneeStats = 2021, NbPartiesJouees = 82, NbVictoires = 45, NbDefaites = 26, NbDefProlo = 11, NbButsPour = 315, NbButsContre = 287 },
+                    new StatsEquipeBd { EquipeId = 3, AnneeStats = 2021, NbPartiesJouees = 82, NbVictoires = 44, NbDefaites = 30, NbDefProlo = 8, NbButsPour = 300, NbButsContre = 307 },
+                    new StatsEquipeBd { EquipeId = 4, AnneeStats = 2021, NbPartiesJouees = 82, NbVictoires = 34, NbDefaites = 40, NbDefProlo = 8, NbButsPour = 280, NbButsContre = 337 },
+                    new StatsEquipeBd { EquipeId = 1, AnneeStats = 2020, NbPartiesJouees = 82, NbVictoires = 50, NbDefaites = 20, NbDefProlo = 12, NbButsPour = 380, NbButsContre = 267 },
+                    new StatsEquipeBd { EquipeId = 2, AnneeStats = 2020, NbPartiesJouees = 82, NbVictoires = 45, NbDefaites = 26, NbDefProlo = 11, NbButsPour = 315, NbButsContre = 287 },
+                    new StatsEquipeBd { EquipeId = 3, AnneeStats = 2020, NbPartiesJouees = 82, NbVictoires = 44, NbDefaites = 30, NbDefProlo = 8, NbButsPour = 300, NbButsContre = 307 },
+                    new StatsEquipeBd { EquipeId = 4, AnneeStats = 2020, NbPartiesJouees = 82, NbVictoires = 34, NbDefaites = 40, NbDefProlo = 8, NbButsPour = 280, NbButsContre = 337 },
+                    new StatsEquipeBd { EquipeId = 1, AnneeStats = 2019, NbPartiesJouees = 82, NbVictoires = 43, NbDefaites = 29, NbDefProlo = 10, NbButsPour = 330, NbButsContre = 290 },
+                    new StatsEquipeBd { EquipeId = 2, AnneeStats = 2019, NbPartiesJouees = 82, NbVictoires = 48, NbDefaites = 21, NbDefProlo = 13, NbButsPour = 345, NbButsContre = 255 },
+                    new StatsEquipeBd { EquipeId = 3, AnneeStats = 2019, NbPartiesJouees = 82, NbVictoires = 46, NbDefaites = 26, NbDefProlo = 10, NbButsPour = 320, NbButsContre = 295 },
+                    new StatsEquipeBd { EquipeId = 4, AnneeStats = 2019, NbPartiesJouees = 82, NbVictoires = 38, NbDefaites = 33, NbDefProlo = 11, NbButsPour = 311, NbButsContre = 307 },
+                    new StatsEquipeBd { EquipeId = 1, AnneeStats = 2018, NbPartiesJouees = 82, NbVictoires = 33, NbDefaites = 34, NbDefProlo = 15, NbButsPour = 310, NbButsContre = 312 },
+                    new StatsEquipeBd { EquipeId = 2, AnneeStats = 2018, NbPartiesJouees = 82, NbVictoires = 45, NbDefaites = 23, NbDefProlo = 14, NbButsPour = 340, NbButsContre = 275 },
+                    new StatsEquipeBd { EquipeId = 3, AnneeStats = 2018, NbPartiesJouees = 82, NbVictoires = 47, NbDefaites = 26, NbDefProlo = 9, NbButsPour = 340, NbButsContre = 298 },
+                    new StatsEquipeBd { EquipeId = 4, AnneeStats = 2018, NbPartiesJouees = 82, NbVictoires = 41, NbDefaites = 31, NbDefProlo = 10, NbButsPour = 341, NbButsContre = 280 }
                 );
         }
     }
