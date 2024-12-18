@@ -23,8 +23,7 @@ namespace ServiceLigueHockey.Data.Controllers
             _context = context;
         }
 
-
-        // GET: api/equipeJoueurBds/parequipe/1
+        // GET: api/equipeJoueur/parequipe/1
         [HttpGet("parequipe/{EquipeId}")]
         public ActionResult<IList<EquipeJoueurDto>> GetEquipeJoueurParEquipe(int equipeId)
         {
@@ -67,14 +66,14 @@ namespace ServiceLigueHockey.Data.Controllers
             return Ok(retour);
         }
 
-        // GET: api/equipeJoueurBds/5/6
+        // GET: api/equipeJoueur/5/6
         [HttpGet("{EquipeId}/{JoueurId}")]
         public ActionResult<EquipeJoueurDto> GetEquipeJoueurBd(int equipeId, int joueurId)
         {
             var lecture = from item in _context.equipeJoueur
                              join unJoueur in _context.joueur on item.JoueurId equals unJoueur.Id
                              where item.EquipeId == equipeId
-                             where item.JoueurId == joueurId
+                                && item.JoueurId == joueurId
                              select new EquipeJoueurDto
                              {
                                  EquipeId = item.EquipeId,
@@ -95,7 +94,54 @@ namespace ServiceLigueHockey.Data.Controllers
             return Ok(listeAlignement);
         }
 
-        // PUT: api/equipeJoueurBds/5
+        // GET: api/EquipeJoueur/parclef/1/1/2008-09-30
+        [HttpGet("parclef/{EquipeId}/{JoueurId}/{DateDebutAvecEquipe}")]
+        public ActionResult<EquipeJoueurDto> GetEquipeJoueurAvecClef(int equipeId, int joueurId, DateTime dateDebutAvecEquipe)
+        {
+            var lecture = from item in _context.equipeJoueur
+                          join unJoueur in _context.joueur on item.JoueurId equals unJoueur.Id
+                          where item.EquipeId == equipeId
+                             && item.JoueurId == joueurId
+                             && item.DateDebutAvecEquipe == dateDebutAvecEquipe
+                          select new EquipeJoueurDto
+                          {
+                              EquipeId = item.EquipeId,
+                              JoueurId = item.JoueurId,
+                              NoDossard = item.NoDossard,
+                              DateDebutAvecEquipe = item.DateDebutAvecEquipe,
+                              DateFinAvecEquipe = item.DateFinAvecEquipe,
+                              PrenomNomJoueur = unJoueur.Prenom + " " + unJoueur.Nom
+                          };
+
+            if (lecture == null)
+            {
+                return NotFound();
+            }
+
+            var monAlignement = lecture.FirstOrDefault();
+
+            return Ok(monAlignement);
+        }
+
+        // GET: api/Equipe/nomequipeville/6
+        [HttpGet("Equipe/nomequipeville/{EquipeId}")]
+        public ActionResult<string> GetNomEquipeVille(int equipeId)
+        {
+            var lecture = from item in _context.equipe
+                             where item.Id == equipeId
+                             select new string(item.NomEquipe + " " + item.Ville);
+
+            if (lecture == null)
+            {
+                return NotFound();
+            }
+
+            var strNomEquipeVille = lecture.FirstOrDefault();
+
+            return Ok(strNomEquipeVille);
+        }
+
+        // PUT: api/equipeJoueur/5/6
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{EquipeId}/{JoueurId}")]
         public async Task<IActionResult> PutEquipeJoueurBd(int equipeId, int joueurId, EquipeJoueurDto equipeJoueurDto)
@@ -135,7 +181,7 @@ namespace ServiceLigueHockey.Data.Controllers
             return NoContent();
         }
 
-        // POST: api/equipeJoueurBds
+        // POST: api/equipeJoueur
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<EquipeJoueurDto>> PostEquipeJoueurBd(EquipeJoueurDto equipeJoueurDto)
@@ -169,7 +215,7 @@ namespace ServiceLigueHockey.Data.Controllers
             return CreatedAtAction(nameof(equipeJoueurDto), new { id = equipeJoueurBd.Equipe }, equipeJoueurDto);
         }
 
-        // DELETE: api/equipeJoueurBds/5/6
+        // DELETE: api/equipeJoueur/5/6
         [HttpDelete("{EquipeId}/{JoueurId}")]
         public async Task<IActionResult> DeleteEquipeJoueurBd(int equipeId, int joueurId)
         {

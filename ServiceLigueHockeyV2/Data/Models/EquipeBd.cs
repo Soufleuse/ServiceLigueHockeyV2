@@ -23,5 +23,7 @@ namespace ServiceLigueHockey.Data.Models
         public int? EstDevenueEquipe { get; set; }
 
         public virtual ICollection<EquipeJoueurBd> listeEquipeJoueur { get; set; } = default!;
+
+        public virtual ICollection<StatsEquipeBd> listeStatsEquipe { get; set; } = default!;
     }
 }
