@@ -6,8 +6,8 @@ namespace ServiceLigueHockey.Data.Models
     /// <summary>
     /// Classe représentant une partie jouée entre deux équipe à une date donnée
     /// </summary>
-    [Table("Calendrier")]
-    public class CalendrierBd
+    [Table("Partie")]
+    public class PartieBd
     {
         // IdPartie sera la primary key utilisée pour lire la feuille de pointage
         // au lieu d'avoir le triplet id equipe hote - id equipe visiteur - date de

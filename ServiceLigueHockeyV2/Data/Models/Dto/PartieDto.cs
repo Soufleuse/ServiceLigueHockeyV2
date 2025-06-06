@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 namespace ServiceLigueHockey.Data.Models.Dto {
-    public class CalendrierDto
+    public class PartieDto
     {
         // IdPartie sera la primary key utilisée pour lire la feuille de pointage
         // au lieu d'avoir le triplet id equipe hote - id equipe visiteur - date de

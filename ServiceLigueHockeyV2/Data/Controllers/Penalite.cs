@@ -106,7 +106,7 @@ namespace ServiceLigueHockey.Data.Controllers
                 return NotFound();
             }
 
-            _context.calendrier.Remove(calendrierBd);
+            _context.penalites.Remove(partieBd);
             await _context.SaveChangesAsync();
 
             return NoContent();

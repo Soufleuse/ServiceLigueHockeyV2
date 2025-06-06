@@ -95,7 +95,7 @@ namespace ServiceLigueHockeyV2.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ServiceLigueHockey.Data.Models.CalendrierBd", b =>
+            modelBuilder.Entity("ServiceLigueHockey.Data.Models.partieBd", b =>
                 {
                     b.Property<int>("IdPartie")
                         .HasColumnType("int");
@@ -1513,7 +1513,7 @@ namespace ServiceLigueHockeyV2.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ServiceLigueHockey.Data.Models.CalendrierBd", b =>
+            modelBuilder.Entity("ServiceLigueHockey.Data.Models.partieBd", b =>
                 {
                     b.HasOne("ServiceLigueHockey.Data.Models.AnneeStatsBd", "zeAnnee")
                         .WithMany("listeCalendrier")
@@ -1586,7 +1586,7 @@ namespace ServiceLigueHockeyV2.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServiceLigueHockey.Data.Models.CalendrierBd", "MonCalendrier")
+                    b.HasOne("ServiceLigueHockey.Data.Models.partieBd", "MonCalendrier")
                         .WithMany("listePenalites")
                         .HasForeignKey("IdPartie")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1599,7 +1599,7 @@ namespace ServiceLigueHockeyV2.Migrations
 
             modelBuilder.Entity("ServiceLigueHockey.Data.Models.PointeursBd", b =>
                 {
-                    b.HasOne("ServiceLigueHockey.Data.Models.CalendrierBd", "MonCalendrier")
+                    b.HasOne("ServiceLigueHockey.Data.Models.partieBd", "MonCalendrier")
                         .WithMany("listePointeurs")
                         .HasForeignKey("IdPartie")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1643,7 +1643,7 @@ namespace ServiceLigueHockeyV2.Migrations
                     b.Navigation("listeCalendrier");
                 });
 
-            modelBuilder.Entity("ServiceLigueHockey.Data.Models.CalendrierBd", b =>
+            modelBuilder.Entity("ServiceLigueHockey.Data.Models.partieBd", b =>
                 {
                     b.Navigation("listePenalites");
 

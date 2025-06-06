@@ -14,6 +14,6 @@ namespace ServiceLigueHockey.Data.Models.Dto {
         //public virtual ICollection<Penalite_TypePenaliteDto> listePenalites { get; set; } = default!;
         
         public int IdPartie { get; set; }
-        //public virtual CalendrierDto MonCalendrier { get; set; } = default!;
+        //public virtual PartieDto MaPartie { get; set; } = default!;
     }
 }

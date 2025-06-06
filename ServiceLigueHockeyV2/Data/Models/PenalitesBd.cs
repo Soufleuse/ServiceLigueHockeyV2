@@ -18,6 +18,6 @@ namespace ServiceLigueHockey.Data.Models
         public virtual ICollection<Penalite_TypePenaliteBd> listePenalites { get; set; } = default!;
         
         public int IdPartie { get; set; }
-        public virtual CalendrierBd MonCalendrier { get; set; } = default!;
+        public virtual PartieBd MaPartie { get; set; } = default!;
     }
 }
