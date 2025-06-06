@@ -23,6 +23,27 @@ namespace ServiceLigueHockey.Data.Controllers
             _context = context;
         }
 
+        // GET: api/equipeJoueur
+        [HttpGet]
+        public ActionResult<IList<EquipeJoueurDto>> GetEquipeJoueur()
+        {
+            var listeEquipeJoueur = from item in _context.equipeJoueur
+                                    join unJoueur in _context.joueur on item.JoueurId equals unJoueur.Id
+                                    select new EquipeJoueurDto
+                                    {
+                                        EquipeId = item.EquipeId,
+                                        JoueurId = item.JoueurId,
+                                        NoDossard = item.NoDossard,
+                                        DateDebutAvecEquipe = item.DateDebutAvecEquipe,
+                                        DateFinAvecEquipe = item.DateFinAvecEquipe,
+                                        PrenomNomJoueur = unJoueur.Prenom + " " + unJoueur.Nom,
+                                    };
+
+            var retour = listeEquipeJoueur.ToList();
+
+            return Ok(retour);
+        }
+
         // GET: api/equipeJoueur/parequipe/1
         [HttpGet("parequipe/{EquipeId}")]
         public ActionResult<IList<EquipeJoueurDto>> GetEquipeJoueurParEquipe(int equipeId)
@@ -45,30 +66,9 @@ namespace ServiceLigueHockey.Data.Controllers
             return Ok(retour);
         }
 
-        // GET: api/equipeJoueur
-        [HttpGet]
-        public ActionResult<IList<EquipeJoueurDto>> GetEquipeJoueur()
-        {
-            var listeEquipeJoueur = from item in _context.equipeJoueur
-                                    join unJoueur in _context.joueur on item.JoueurId equals unJoueur.Id
-                                    select new EquipeJoueurDto
-                                    {
-                                        EquipeId = item.EquipeId,
-                                        JoueurId = item.JoueurId,
-                                        NoDossard = item.NoDossard,
-                                        DateDebutAvecEquipe = item.DateDebutAvecEquipe,
-                                        DateFinAvecEquipe = item.DateFinAvecEquipe,
-                                        PrenomNomJoueur = unJoueur.Prenom + " " + unJoueur.Nom,
-                                    };
-
-            var retour = listeEquipeJoueur.ToList();
-
-            return Ok(retour);
-        }
-
         // GET: api/equipeJoueur/5/6
         [HttpGet("{EquipeId}/{JoueurId}")]
-        public ActionResult<EquipeJoueurDto> GetEquipeJoueurBd(int equipeId, int joueurId)
+        public ActionResult<EquipeJoueurDto> GetEquipeJoueur(int equipeId, int joueurId)
         {
             var lecture = from item in _context.equipeJoueur
                              join unJoueur in _context.joueur on item.JoueurId equals unJoueur.Id
