@@ -133,10 +133,21 @@ namespace ServiceLigueHockey.Data.Controllers
                 EstDevenueEquipe = equipe.EstDevenueEquipe
             };
 
-            _context.equipe.Add(equipeBd);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.equipe.Add(equipeBd);
+                await _context.SaveChangesAsync();
 
-            equipe.Id = equipeBd.Id;
+                equipe.Id = equipeBd.Id;
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return Problem(ex.InnerException.StackTrace, null, 500, ex.InnerException.Message, null);
+                }
+                return Problem(ex.StackTrace, null, 500, ex.Message, null);
+            }
 
             return CreatedAtAction("PostEquipeDto", equipe);
         }

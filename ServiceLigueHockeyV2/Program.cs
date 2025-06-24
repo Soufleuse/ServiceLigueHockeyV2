@@ -40,7 +40,7 @@ builder.Services.AddDbContext<ServiceLigueHockeyContext>(options => {
 builder.Services.AddCors(options => {
     options.AddPolicy(name: monAllowSpecificOrigin,
         builder => {
-            builder.WithOrigins("http://localhost:4900")
+            builder.WithOrigins("http://localhost", "https://localhost")
                 .WithHeaders("Content-Type")
                 .WithMethods("POST","GET","PUT","OPTIONS");
         });

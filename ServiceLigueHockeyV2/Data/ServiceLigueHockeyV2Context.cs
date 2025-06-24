@@ -65,6 +65,7 @@ namespace ServiceLigueHockey.Data
             modelBuilder.Entity<EquipeBd>().Property(x => x.NomEquipe).HasMaxLength(50);
             modelBuilder.Entity<EquipeBd>().Property(x => x.Ville).HasMaxLength(50);
             modelBuilder.Entity<EquipeBd>().HasMany("listeEquipeJoueur").WithOne("Equipe");
+            modelBuilder.Entity<EquipeBd>().HasIndex(u => new { u.NomEquipe, u.Ville }).IsUnique();
 
             modelBuilder.Entity<JoueurBd>().ToTable("Joueur");
             modelBuilder.Entity<JoueurBd>().HasKey(c => c.Id);

@@ -6,13 +6,13 @@ namespace ServiceLigueHockey.Data.Models
     public class StatsEquipeBd
     {
         public short AnneeStats { get; set; }
-        public short NbPartiesJouees { get; set; }
+        public short NbPartiesJouees { get; set; } = default;
 
-        public short NbVictoires { get; set; }
-        public short NbDefaites { get; set; }
-        public short? NbDefProlo { get; set; }
-        public int NbButsPour { get; set;}
-        public int NbButsContre { get; set; }
+        public short NbVictoires { get; set; } = default;
+        public short NbDefaites { get; set; } = default;
+        public short? NbDefProlo { get; set; } = default;
+        public int NbButsPour { get; set; } = 0;
+        public int NbButsContre { get; set; } = 0;
 
         //[ForeignKey("Equipe")]
         public int EquipeId { get; set; }
