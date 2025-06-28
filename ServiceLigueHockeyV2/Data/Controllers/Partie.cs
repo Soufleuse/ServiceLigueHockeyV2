@@ -21,22 +21,22 @@ namespace ServiceLigueHockey.Data.Controllers
         [HttpGet]
         public ActionResult<IQueryable<PartieDto>> GetPartieDto()
         {
-            var listeParties = from maPartie in _context.parties
+            var listeParties = from MonCalendrier in _context.parties
                                select new PartieDto
                                {
-                                    IdPartie = maPartie.IdPartie,
-                                    IdEquipeHote = maPartie.IdEquipeHote,
-                                    IdEquipeVisiteuse = maPartie.IdEquipeVisiteuse,
-                                    AnneeStats = maPartie.AnneeStats,
-                                    DatePartieJouee = maPartie.DatePartieJouee,
-                                    NbreButsComptesParHote = maPartie.NbreButsComptesParHote,
-                                    NbreButsComptesParVisiteur = maPartie.NbreButsComptesParVisiteur,
-                                    AFiniEnProlongation = maPartie.AFiniEnProlongation,
-                                    AFiniEnTirDeBarrage = maPartie.AFiniEnTirDeBarrage,
-                                    EstUnePartieDeSerie = maPartie.EstUnePartieDeSerie,
-                                    EstUnePartiePresaison=maPartie.EstUnePartiePresaison,
-                                    EstUnePartieSaisonReguliere = maPartie.EstUnePartieSaisonReguliere,
-                                    SommairePartie = maPartie.SommairePartie
+                                    IdPartie = MonCalendrier.IdPartie,
+                                    IdEquipeHote = MonCalendrier.IdEquipeHote,
+                                    IdEquipeVisiteuse = MonCalendrier.IdEquipeVisiteuse,
+                                    AnneeStats = MonCalendrier.AnneeStats,
+                                    DatePartieJouee = MonCalendrier.DatePartieJouee,
+                                    NbreButsComptesParHote = MonCalendrier.NbreButsComptesParHote,
+                                    NbreButsComptesParVisiteur = MonCalendrier.NbreButsComptesParVisiteur,
+                                    AFiniEnProlongation = MonCalendrier.AFiniEnProlongation,
+                                    AFiniEnTirDeBarrage = MonCalendrier.AFiniEnTirDeBarrage,
+                                    EstUnePartieDeSerie = MonCalendrier.EstUnePartieDeSerie,
+                                    EstUnePartiePresaison=MonCalendrier.EstUnePartiePresaison,
+                                    EstUnePartieSaisonReguliere = MonCalendrier.EstUnePartieSaisonReguliere,
+                                    SommairePartie = MonCalendrier.SommairePartie
                                };
 
             return Ok(listeParties);
@@ -83,7 +83,7 @@ namespace ServiceLigueHockey.Data.Controllers
                 return BadRequest();
             }
 
-            var partieBd = new PartieBd
+            var partieBd = new CalendrierBd
             {
                 IdPartie = partie.IdPartie,
                 IdEquipeHote = partie.IdEquipeHote,
@@ -126,7 +126,7 @@ namespace ServiceLigueHockey.Data.Controllers
         [HttpPost]
         public async Task<ActionResult<PartieDto>> PostPartieDto(PartieDto partie)
         {
-            var partieBd = new PartieBd
+            var partieBd = new CalendrierBd
             {
                 IdPartie = partie.IdPartie,
                 IdEquipeHote = partie.IdEquipeHote,

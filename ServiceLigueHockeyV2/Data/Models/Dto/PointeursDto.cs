@@ -11,6 +11,6 @@ namespace ServiceLigueHockey.Data.Models.Dto {
         public int? IdJoueurSecondeAssistance { get; set; } = null;
         
         public int IdPartie { get; set; }
-        //public virtual partieBd MaPartie { get; set; } = default!;
+        //public virtual partieBd MonCalendrier { get; set; } = default!;
     }
 }

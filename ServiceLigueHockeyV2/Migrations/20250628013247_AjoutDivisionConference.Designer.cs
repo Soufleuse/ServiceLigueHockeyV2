@@ -1722,26 +1722,26 @@ namespace ServiceLigueHockeyV2.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServiceLigueHockey.Data.Models.PartieBd", "MaPartie")
+                    b.HasOne("ServiceLigueHockey.Data.Models.PartieBd", "MonCalendrier")
                         .WithMany("listePenalites")
                         .HasForeignKey("IdPartie")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("MaPartie");
+                    b.Navigation("MonCalendrier");
 
                     b.Navigation("joueurPenalise");
                 });
 
             modelBuilder.Entity("ServiceLigueHockey.Data.Models.PointeursBd", b =>
                 {
-                    b.HasOne("ServiceLigueHockey.Data.Models.PartieBd", "MaPartie")
+                    b.HasOne("ServiceLigueHockey.Data.Models.PartieBd", "MonCalendrier")
                         .WithMany("listePointeurs")
                         .HasForeignKey("IdPartie")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("MaPartie");
+                    b.Navigation("MonCalendrier");
                 });
 
             modelBuilder.Entity("ServiceLigueHockey.Data.Models.StatsEquipeBd", b =>

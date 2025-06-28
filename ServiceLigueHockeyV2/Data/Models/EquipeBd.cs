@@ -30,8 +30,8 @@ namespace ServiceLigueHockey.Data.Models
 
         public virtual ICollection<StatsEquipeBd> listeStatsEquipe { get; set; } = default!;
 
-        public virtual ICollection<PartieBd> listeEquipeHote { get; set; } = default!;
+        public virtual ICollection<CalendrierBd> listeEquipeHote { get; set; } = default!;
         
-        public virtual ICollection<PartieBd> listeEquipeVisiteur { get; set; } = default!;
+        public virtual ICollection<CalendrierBd> listeEquipeVisiteur { get; set; } = default!;
     }
 }
