@@ -12,6 +12,10 @@ namespace ServiceLigueHockey.Data
             this.Configuration = configuration;
         }
 
+        public DbSet<ConferenceBd> conference { get; set; } = default!;
+
+        public DbSet<DivisionBd> division { get; set; } = default!;
+
         public DbSet<EquipeBd> equipe { get; set; } = default!;
 
         public DbSet<JoueurBd> joueur { get; set; } = default!;
@@ -58,6 +62,21 @@ namespace ServiceLigueHockey.Data
             modelBuilder.Entity<AnneeStatsBd>().Property(e => e.AnneeStats).ValueGeneratedNever();
             modelBuilder.Entity<AnneeStatsBd>().HasMany(d => d.listeParties)
                                                .WithOne(d => d.zeAnnee);
+                            
+            modelBuilder.Entity<ConferenceBd>().ToTable("Conference");
+            modelBuilder.Entity<ConferenceBd>().HasKey(c => c.Id);
+            modelBuilder.Entity<ConferenceBd>().Property(c => c.Id).ValueGeneratedNever();
+            modelBuilder.Entity<ConferenceBd>().Property(x => x.NomConference).HasMaxLength(25);
+            modelBuilder.Entity<ConferenceBd>().HasIndex(x => new { x.NomConference, x.AnneeDebut }).IsUnique();
+
+            modelBuilder.Entity<DivisionBd>().ToTable("Division");
+            modelBuilder.Entity<DivisionBd>().HasKey(x => x.Id);
+            modelBuilder.Entity<DivisionBd>().Property(x => x.Id).ValueGeneratedNever();
+            modelBuilder.Entity<DivisionBd>().Property(x => x.NomDivision).HasMaxLength(25);
+            modelBuilder.Entity<DivisionBd>().HasIndex(x => new { x.NomDivision, x.AnneeDebut }).IsUnique();
+            modelBuilder.Entity<DivisionBd>().HasOne(x => x.ConferenceParent)
+                                             .WithMany(y => y.listeDivision)
+                                             .HasForeignKey(z => z.ConferenceId);
 
             modelBuilder.Entity<EquipeBd>().ToTable("Equipe");
             modelBuilder.Entity<EquipeBd>().HasKey(c => c.Id);
@@ -65,6 +84,9 @@ namespace ServiceLigueHockey.Data
             modelBuilder.Entity<EquipeBd>().Property(x => x.NomEquipe).HasMaxLength(50);
             modelBuilder.Entity<EquipeBd>().Property(x => x.Ville).HasMaxLength(50);
             modelBuilder.Entity<EquipeBd>().HasMany("listeEquipeJoueur").WithOne("Equipe");
+            modelBuilder.Entity<EquipeBd>().HasOne(x => x.division)
+                                           .WithMany(y => y.listeEquipeBd)
+                                           .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<EquipeBd>().HasIndex(u => new { u.NomEquipe, u.Ville }).IsUnique();
 
             modelBuilder.Entity<JoueurBd>().ToTable("Joueur");
@@ -146,8 +168,8 @@ namespace ServiceLigueHockey.Data
                                            .WithOne("MaPartie")
                                            .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<PartieBd>().HasMany("listePenalites")
-                                               .WithOne("MaPartie")
-                                               .OnDelete(DeleteBehavior.NoAction);
+                                           .WithOne("MaPartie")
+                                           .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<PointeursBd>().ToTable("FeuillePointage");
             modelBuilder.Entity<PointeursBd>().HasKey(u => new { u.IdPartie, u.MomentDuButMarque });
@@ -179,14 +201,26 @@ namespace ServiceLigueHockey.Data
                                               .HasForeignKey("IdJoueurPenalise");
 
             // Ajout de données
+            modelBuilder.Entity<ConferenceBd>().HasData(
+                new ConferenceBd { Id = 1, NomConference = "Est", AnneeDebut = 1994 },
+                new ConferenceBd { Id = 2, NomConference = "Ouest", AnneeDebut = 1994 }
+            );
+
+            modelBuilder.Entity<DivisionBd>().HasData(
+                new DivisionBd { Id = 1, ConferenceId = 1, NomDivision = "Atlantique", AnneeDebut = 1994 },
+                new DivisionBd { Id = 2, ConferenceId = 1, NomDivision = "Métropolitaine", AnneeDebut = 1994 },
+                new DivisionBd { Id = 3, ConferenceId = 2, NomDivision = "Centrale", AnneeDebut = 1994 },
+                new DivisionBd { Id = 4, ConferenceId = 2, NomDivision = "Pacifique", AnneeDebut = 1994 }
+            );
+
             modelBuilder.Entity<EquipeBd>()
                 .HasData(
-                new EquipeBd { Id = 1, NomEquipe = "Canadiensssss", Ville = "Mourial", AnneeDebut = 1989 },
-                new EquipeBd { Id = 2, NomEquipe = "Bruns", Ville = "Albany", AnneeDebut = 1984 },
-                new EquipeBd { Id = 3, NomEquipe = "Harfangs", Ville = "Hartford", AnneeDebut = 1976 },
-                new EquipeBd { Id = 4, NomEquipe = "Boulettes", Ville = "Victoriaville", AnneeDebut = 1999 },
-                new EquipeBd { Id = 5, NomEquipe = "Rocher", Ville = "Percé", AnneeDebut = 2001 },
-                new EquipeBd { Id = 6, NomEquipe = "Pierre", Ville = "Rochester", AnneeDebut = 1986 }
+                new EquipeBd { Id = 1, NomEquipe = "Canadiensssss", Ville = "Mourial", AnneeDebut = 1989, DivisionId = 1 },
+                new EquipeBd { Id = 2, NomEquipe = "Bruns", Ville = "Albany", AnneeDebut = 1984, DivisionId = 1 },
+                new EquipeBd { Id = 3, NomEquipe = "Harfangs", Ville = "Hartford", AnneeDebut = 1976, DivisionId = 1 },
+                new EquipeBd { Id = 4, NomEquipe = "Boulettes", Ville = "Victoriaville", AnneeDebut = 1999, DivisionId = 1 },
+                new EquipeBd { Id = 5, NomEquipe = "Rocher", Ville = "Percé", AnneeDebut = 2001, DivisionId = 1 },
+                new EquipeBd { Id = 6, NomEquipe = "Pierre", Ville = "Rochester", AnneeDebut = 1986, DivisionId = 1 }
                 );
 
             modelBuilder.Entity<JoueurBd>()

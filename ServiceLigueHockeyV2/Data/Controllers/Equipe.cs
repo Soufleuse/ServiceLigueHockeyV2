@@ -121,7 +121,7 @@ namespace ServiceLigueHockey.Data.Controllers
         // POST: api/Equipe
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<EquipeDto>> PostEquipeDto(EquipeDto equipe)
+        public async Task<ActionResult> PostEquipeDto(EquipeDto equipe)
         {
             var equipeBd = new EquipeBd
             {
@@ -144,7 +144,7 @@ namespace ServiceLigueHockey.Data.Controllers
             {
                 if (ex.InnerException != null)
                 {
-                    return Problem(ex.InnerException.StackTrace, null, 500, ex.InnerException.Message, null);
+                    return Problem(ex.InnerException.Message);
                 }
                 return Problem(ex.StackTrace, null, 500, ex.Message, null);
             }
