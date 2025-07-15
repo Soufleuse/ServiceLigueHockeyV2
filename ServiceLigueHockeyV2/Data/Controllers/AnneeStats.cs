@@ -9,7 +9,8 @@ namespace ServiceLigueHockey.Data.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class AnneeStats : ControllerBase
-    {private readonly ServiceLigueHockeyContext _context;
+    {
+        private readonly ServiceLigueHockeyContext _context;
 
         public AnneeStats(ServiceLigueHockeyContext context)
         {

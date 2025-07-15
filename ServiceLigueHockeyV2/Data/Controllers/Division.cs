@@ -81,7 +81,7 @@ namespace ServiceLigueHockey.Data.Controllers
                 NomDivision = divisionBd.NomDivision,
                 ConferenceId = divisionBd.ConferenceId,
                 AnneeDebut = divisionBd.AnneeDebut,
-                AnneeFin = divisionBd.AnneeFin,
+                AnneeFin = divisionBd.AnneeFin/*,
                 ConferenceParent = new ConferenceDto
                 {
                     Id = divisionBd.ConferenceParent.Id,
@@ -89,8 +89,17 @@ namespace ServiceLigueHockey.Data.Controllers
                     EstDevenueConference = divisionBd.ConferenceParent.EstDevenueConference,
                     AnneeDebut = divisionBd.ConferenceParent.AnneeDebut,
                     AnneeFin = divisionBd.ConferenceParent.AnneeFin
-                }
+                }*/
             };
+
+            /*if (divisionBd.ConferenceParent == null)
+            {
+                Console.WriteLine("Conférence parent absente");
+            }
+            else
+            {
+                Console.WriteLine("Conférence parent présente");
+            }*/
 
             return Ok(divisionDto);
         }

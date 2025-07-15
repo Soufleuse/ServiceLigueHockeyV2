@@ -20,6 +20,8 @@ namespace ServiceLigueHockey.Data.Models.Dto
 
         public int? EstDevenueEquipe { get; set; }
 
+        public int DivisionId { get; set; } = 1;
+
         //public virtual ICollection<EquipeJoueurBd> listeEquipeJoueur { get; set; } = default!;
     }
 }

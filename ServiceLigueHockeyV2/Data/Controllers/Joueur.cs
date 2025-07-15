@@ -69,8 +69,8 @@ namespace ServiceLigueHockey.Data.Controllers
         public ActionResult<string> GetPrenomNomJoueur(int joueurId)
         {
             var lecture = from item in _context.joueur
-                             where item.Id == joueurId
-                             select new string(item.Prenom + " " + item.Nom);
+                          where item.Id == joueurId
+                          select new string(item.Prenom + " " + item.Nom);
 
             if (lecture == null)
             {
@@ -87,6 +87,7 @@ namespace ServiceLigueHockey.Data.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutJoueurBd(int id, JoueurBd joueurBd)
         {
+            Console.WriteLine("Entrée dans PutJoueurBd");
             if (id != joueurBd.Id)
             {
                 return BadRequest();
@@ -128,10 +129,17 @@ namespace ServiceLigueHockey.Data.Controllers
                 PaysOrigine = joueur.PaysOrigine
             };
 
-            _context.joueur.Add(joueurBd);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.joueur.Add(joueurBd);
+                await _context.SaveChangesAsync();
 
-            joueur.Id = joueurBd.Id;
+                joueur.Id = joueurBd.Id;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             return CreatedAtAction("PostJoueurDto", joueur);
         }
@@ -155,6 +163,67 @@ namespace ServiceLigueHockey.Data.Controllers
         private bool JoueurBdExists(int id)
         {
             return _context.joueur.Any(e => e.Id == id);
+        }
+        
+        [HttpPost("ajouterJoueurEtEquipe")]
+        public async Task<ActionResult> AjouterJoueurEtEquipe([FromBody] JoueurEquipeCompleteDto donnees)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            
+            try
+            {
+                // Créer le joueur
+                var joueurBd = new JoueurBd
+                {
+                    Prenom = donnees.Joueur.Prenom,
+                    Nom = donnees.Joueur.Nom,
+                    DateNaissance = donnees.Joueur.DateNaissance,
+                    VilleNaissance = donnees.Joueur.VilleNaissance,
+                    PaysOrigine = donnees.Joueur.PaysOrigine
+                };
+                
+                _context.joueur.Add(joueurBd);
+                await _context.SaveChangesAsync(); // Sauvegarde pour obtenir l'ID du joueur
+                
+                // Créer la relation équipe-joueur
+                var equipeJoueurBd = new EquipeJoueurBd
+                {
+                    EquipeId = donnees.EquipeJoueur.EquipeId,
+                    JoueurId = joueurBd.Id, // Utiliser l'ID généré
+                    NoDossard = donnees.EquipeJoueur.NoDossard,
+                    DateDebutAvecEquipe = donnees.EquipeJoueur.DateDebutAvecEquipe,
+                    DateFinAvecEquipe = donnees.EquipeJoueur.DateFinAvecEquipe
+                };
+                
+                _context.equipeJoueur.Add(equipeJoueurBd);
+                await _context.SaveChangesAsync();
+                
+                // Confirmer la transaction
+                await transaction.CommitAsync();
+                
+                // Retourner les données complètes incluant le nom complet du joueur
+                var equipeJoueurDto = new EquipeJoueurDto
+                {
+                    JoueurId = joueurBd.Id,
+                    EquipeId = donnees.EquipeJoueur.EquipeId,
+                    PrenomNomJoueur = $"{joueurBd.Prenom} {joueurBd.Nom}",
+                    DateDebutAvecEquipe = donnees.EquipeJoueur.DateDebutAvecEquipe,
+                    DateFinAvecEquipe = donnees.EquipeJoueur.DateFinAvecEquipe,
+                    NoDossard = donnees.EquipeJoueur.NoDossard
+                };
+                
+                return Ok(new { 
+                    Message = "Joueur et relation équipe-joueur créés avec succès", 
+                    JoueurId = joueurBd.Id,
+                    EquipeJoueur = equipeJoueurDto
+                });
+            }
+            catch (Exception ex)
+            {
+                // Annuler la transaction en cas d'erreur
+                await transaction.RollbackAsync();
+                return BadRequest($"Erreur lors de l'insertion : {ex.Message}");
+            }
         }
     }
 }

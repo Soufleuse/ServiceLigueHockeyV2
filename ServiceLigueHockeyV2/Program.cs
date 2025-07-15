@@ -40,7 +40,7 @@ builder.Services.AddDbContext<ServiceLigueHockeyContext>(options => {
 builder.Services.AddCors(options => {
     options.AddPolicy(name: monAllowSpecificOrigin,
         builder => {
-            builder.WithOrigins("http://localhost", "https://localhost")
+            builder.WithOrigins("http://localhost:4900", "https://localhost:4900", "http://127.0.0.1:4900", "https://127.0.0.1:4900")
                 .WithHeaders("Content-Type")
                 .WithMethods("POST","GET","PUT","OPTIONS");
         });
@@ -52,12 +52,14 @@ app.UseCors(monAllowSpecificOrigin);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    Console.WriteLine("dev");
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 else
 {
-    app.UseHttpsRedirection();
+    Console.WriteLine("prod");
+    //app.UseHttpsRedirection();
 }
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions

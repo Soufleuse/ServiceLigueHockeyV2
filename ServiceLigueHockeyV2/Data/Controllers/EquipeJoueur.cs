@@ -66,6 +66,36 @@ namespace ServiceLigueHockey.Data.Controllers
             return Ok(retour);
         }
 
+        // GET: api/equipeJoueur/parjoueur/1/true
+        [HttpGet("parjoueur/{JoueurId}/{seulementActif}")]
+        public ActionResult<IList<EquipeJoueurDto>> GetEquipeJoueurParJoueur(int joueurId, bool seulementActif)
+        {
+            var listeEquipeJoueur = from item in _context.equipeJoueur
+                                    join unJoueur in _context.joueur on item.JoueurId equals unJoueur.Id
+                                    where item.JoueurId == joueurId
+                                    select new EquipeJoueurDto
+                                    {
+                                        EquipeId = item.EquipeId,
+                                        JoueurId = item.JoueurId,
+                                        NoDossard = item.NoDossard,
+                                        DateDebutAvecEquipe = item.DateDebutAvecEquipe,
+                                        DateFinAvecEquipe = item.DateFinAvecEquipe,
+                                        PrenomNomJoueur = unJoueur.Prenom + " " + unJoueur.Nom
+                                    };
+
+            List<EquipeJoueurDto> retour;
+            if (seulementActif)
+            {
+                retour = listeEquipeJoueur.Where(x => x.DateFinAvecEquipe == null).ToList();
+            }
+            else
+            {
+                retour = listeEquipeJoueur.ToList();
+            }
+
+            return Ok(retour);
+        }
+
         // GET: api/equipeJoueur/5/6
         [HttpGet("{EquipeId}/{JoueurId}")]
         public ActionResult<EquipeJoueurDto> GetEquipeJoueur(int equipeId, int joueurId)
