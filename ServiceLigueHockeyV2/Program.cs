@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.HttpOverrides;
-using System.Net;
 using Microsoft.EntityFrameworkCore;
 using ServiceLigueHockey.Data;
 using Pomelo.EntityFrameworkCore.MySql.Extensions;
