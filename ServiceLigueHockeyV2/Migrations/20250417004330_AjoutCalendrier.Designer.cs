@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServiceLigueHockey.Data;
 
@@ -11,9 +12,11 @@ using ServiceLigueHockey.Data;
 namespace ServiceLigueHockeyV2.Migrations
 {
     [DbContext(typeof(ServiceLigueHockeyContext))]
-    partial class ServiceLigueHockeyContextModelSnapshot : ModelSnapshot
+    [Migration("20250417004330_AjoutCalendrier")]
+    partial class AjoutCalendrier
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,103 +95,74 @@ namespace ServiceLigueHockeyV2.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ServiceLigueHockey.Data.Models.ConferenceBd", b =>
+            modelBuilder.Entity("ServiceLigueHockey.Data.Models.partieBd", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("IdPartie")
                         .HasColumnType("int");
 
-                    b.Property<int>("AnneeDebut")
-                        .HasColumnType("int");
+                    b.Property<string>("AFiniEnProlongation")
+                        .HasColumnType("varchar(1)");
 
-                    b.Property<int?>("AnneeFin")
-                        .HasColumnType("int");
+                    b.Property<string>("AFiniEnTirDeBarrage")
+                        .HasColumnType("varchar(1)");
 
-                    b.Property<int?>("EstDevenueConference")
-                        .HasColumnType("int");
+                    b.Property<short>("AnneeStats")
+                        .HasColumnType("smallint");
 
-                    b.Property<string>("NomConference")
+                    b.Property<DateTime>("DatePartieJouee")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("EstUnePartieDeSerie")
                         .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("varchar(25)");
+                        .HasColumnType("varchar(1)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("EstUnePartiePresaison")
+                        .IsRequired()
+                        .HasColumnType("varchar(1)");
 
-                    b.HasIndex("NomConference", "AnneeDebut")
+                    b.Property<string>("EstUnePartieSaisonReguliere")
+                        .IsRequired()
+                        .HasColumnType("varchar(1)");
+
+                    b.Property<int>("IdEquipeHote")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdEquipeVisiteuse")
+                        .HasColumnType("int");
+
+                    b.Property<short?>("NbreButsComptesParHote")
+                        .HasColumnType("smallint");
+
+                    b.Property<short?>("NbreButsComptesParVisiteur")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("SommairePartie")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("IdPartie");
+
+                    b.HasIndex("AnneeStats");
+
+                    b.HasIndex("IdEquipeVisiteuse");
+
+                    b.HasIndex("IdEquipeHote", "IdEquipeVisiteuse", "DatePartieJouee")
                         .IsUnique();
 
-                    b.ToTable("Conference", (string)null);
+                    b.ToTable("Calendrier", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            AnneeDebut = 1994,
-                            NomConference = "Est"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AnneeDebut = 1994,
-                            NomConference = "Ouest"
-                        });
-                });
-
-            modelBuilder.Entity("ServiceLigueHockey.Data.Models.DivisionBd", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AnneeDebut")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AnneeFin")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ConferenceId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NomDivision")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("varchar(25)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConferenceId");
-
-                    b.HasIndex("NomDivision", "AnneeDebut")
-                        .IsUnique();
-
-                    b.ToTable("Division", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AnneeDebut = 1994,
-                            ConferenceId = 1,
-                            NomDivision = "Atlantique"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AnneeDebut = 1994,
-                            ConferenceId = 1,
-                            NomDivision = "Métropolitaine"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AnneeDebut = 1994,
-                            ConferenceId = 2,
-                            NomDivision = "Centrale"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AnneeDebut = 1994,
-                            ConferenceId = 2,
-                            NomDivision = "Pacifique"
+                            IdPartie = 1,
+                            AnneeStats = (short)2024,
+                            DatePartieJouee = new DateTime(2024, 10, 5, 20, 0, 0, 0, DateTimeKind.Unspecified),
+                            EstUnePartieDeSerie = "N",
+                            EstUnePartiePresaison = "N",
+                            EstUnePartieSaisonReguliere = "O",
+                            IdEquipeHote = 1,
+                            IdEquipeVisiteuse = 2,
+                            SommairePartie = ""
                         });
                 });
 
@@ -206,9 +180,6 @@ namespace ServiceLigueHockeyV2.Migrations
                     b.Property<int?>("AnneeFin")
                         .HasColumnType("int");
 
-                    b.Property<int>("DivisionId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("EstDevenueEquipe")
                         .HasColumnType("int");
 
@@ -224,11 +195,6 @@ namespace ServiceLigueHockeyV2.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DivisionId");
-
-                    b.HasIndex("NomEquipe", "Ville")
-                        .IsUnique();
-
                     b.ToTable("Equipe", (string)null);
 
                     b.HasData(
@@ -236,7 +202,6 @@ namespace ServiceLigueHockeyV2.Migrations
                         {
                             Id = 1,
                             AnneeDebut = 1989,
-                            DivisionId = 1,
                             NomEquipe = "Canadiensssss",
                             Ville = "Mourial"
                         },
@@ -244,7 +209,6 @@ namespace ServiceLigueHockeyV2.Migrations
                         {
                             Id = 2,
                             AnneeDebut = 1984,
-                            DivisionId = 1,
                             NomEquipe = "Bruns",
                             Ville = "Albany"
                         },
@@ -252,7 +216,6 @@ namespace ServiceLigueHockeyV2.Migrations
                         {
                             Id = 3,
                             AnneeDebut = 1976,
-                            DivisionId = 1,
                             NomEquipe = "Harfangs",
                             Ville = "Hartford"
                         },
@@ -260,7 +223,6 @@ namespace ServiceLigueHockeyV2.Migrations
                         {
                             Id = 4,
                             AnneeDebut = 1999,
-                            DivisionId = 1,
                             NomEquipe = "Boulettes",
                             Ville = "Victoriaville"
                         },
@@ -268,7 +230,6 @@ namespace ServiceLigueHockeyV2.Migrations
                         {
                             Id = 5,
                             AnneeDebut = 2001,
-                            DivisionId = 1,
                             NomEquipe = "Rocher",
                             Ville = "Percé"
                         },
@@ -276,7 +237,6 @@ namespace ServiceLigueHockeyV2.Migrations
                         {
                             Id = 6,
                             AnneeDebut = 1986,
-                            DivisionId = 1,
                             NomEquipe = "Pierre",
                             Ville = "Rochester"
                         });
@@ -635,77 +595,6 @@ namespace ServiceLigueHockeyV2.Migrations
                             nom = "AjoutSteve",
                             dateDebut = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             valeur = "ma valeur"
-                        });
-                });
-
-            modelBuilder.Entity("ServiceLigueHockey.Data.Models.PartieBd", b =>
-                {
-                    b.Property<int>("IdPartie")
-                        .HasColumnType("int");
-
-                    b.Property<string>("AFiniEnProlongation")
-                        .HasColumnType("varchar(1)");
-
-                    b.Property<string>("AFiniEnTirDeBarrage")
-                        .HasColumnType("varchar(1)");
-
-                    b.Property<short>("AnneeStats")
-                        .HasColumnType("smallint");
-
-                    b.Property<DateTime>("DatePartieJouee")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("EstUnePartieDeSerie")
-                        .IsRequired()
-                        .HasColumnType("varchar(1)");
-
-                    b.Property<string>("EstUnePartiePresaison")
-                        .IsRequired()
-                        .HasColumnType("varchar(1)");
-
-                    b.Property<string>("EstUnePartieSaisonReguliere")
-                        .IsRequired()
-                        .HasColumnType("varchar(1)");
-
-                    b.Property<int>("IdEquipeHote")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdEquipeVisiteuse")
-                        .HasColumnType("int");
-
-                    b.Property<short?>("NbreButsComptesParHote")
-                        .HasColumnType("smallint");
-
-                    b.Property<short?>("NbreButsComptesParVisiteur")
-                        .HasColumnType("smallint");
-
-                    b.Property<string>("SommairePartie")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("IdPartie");
-
-                    b.HasIndex("AnneeStats");
-
-                    b.HasIndex("IdEquipeVisiteuse");
-
-                    b.HasIndex("IdEquipeHote", "IdEquipeVisiteuse", "DatePartieJouee")
-                        .IsUnique();
-
-                    b.ToTable("Partie", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            IdPartie = 1,
-                            AnneeStats = (short)2024,
-                            DatePartieJouee = new DateTime(2024, 10, 5, 20, 0, 0, 0, DateTimeKind.Unspecified),
-                            EstUnePartieDeSerie = "N",
-                            EstUnePartiePresaison = "N",
-                            EstUnePartieSaisonReguliere = "O",
-                            IdEquipeHote = 1,
-                            IdEquipeVisiteuse = 2,
-                            SommairePartie = ""
                         });
                 });
 
@@ -1624,51 +1513,10 @@ namespace ServiceLigueHockeyV2.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ServiceLigueHockey.Data.Models.DivisionBd", b =>
-                {
-                    b.HasOne("ServiceLigueHockey.Data.Models.ConferenceBd", "ConferenceParent")
-                        .WithMany("listeDivision")
-                        .HasForeignKey("ConferenceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ConferenceParent");
-                });
-
-            modelBuilder.Entity("ServiceLigueHockey.Data.Models.EquipeBd", b =>
-                {
-                    b.HasOne("ServiceLigueHockey.Data.Models.DivisionBd", "division")
-                        .WithMany("listeEquipeBd")
-                        .HasForeignKey("DivisionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("division");
-                });
-
-            modelBuilder.Entity("ServiceLigueHockey.Data.Models.EquipeJoueurBd", b =>
-                {
-                    b.HasOne("ServiceLigueHockey.Data.Models.EquipeBd", "Equipe")
-                        .WithMany("listeEquipeJoueur")
-                        .HasForeignKey("EquipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ServiceLigueHockey.Data.Models.JoueurBd", "Joueur")
-                        .WithMany("listeEquipeJoueur")
-                        .HasForeignKey("JoueurId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Equipe");
-
-                    b.Navigation("Joueur");
-                });
-
-            modelBuilder.Entity("ServiceLigueHockey.Data.Models.PartieBd", b =>
+            modelBuilder.Entity("ServiceLigueHockey.Data.Models.partieBd", b =>
                 {
                     b.HasOne("ServiceLigueHockey.Data.Models.AnneeStatsBd", "zeAnnee")
-                        .WithMany("listeParties")
+                        .WithMany("listeCalendrier")
                         .HasForeignKey("AnneeStats")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -1690,6 +1538,25 @@ namespace ServiceLigueHockeyV2.Migrations
                     b.Navigation("EquipeVisiteuse");
 
                     b.Navigation("zeAnnee");
+                });
+
+            modelBuilder.Entity("ServiceLigueHockey.Data.Models.EquipeJoueurBd", b =>
+                {
+                    b.HasOne("ServiceLigueHockey.Data.Models.EquipeBd", "Equipe")
+                        .WithMany("listeEquipeJoueur")
+                        .HasForeignKey("EquipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ServiceLigueHockey.Data.Models.JoueurBd", "Joueur")
+                        .WithMany("listeEquipeJoueur")
+                        .HasForeignKey("JoueurId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Equipe");
+
+                    b.Navigation("Joueur");
                 });
 
             modelBuilder.Entity("ServiceLigueHockey.Data.Models.Penalite_TypePenaliteBd", b =>
@@ -1719,7 +1586,7 @@ namespace ServiceLigueHockeyV2.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServiceLigueHockey.Data.Models.PartieBd", "MonCalendrier")
+                    b.HasOne("ServiceLigueHockey.Data.Models.partieBd", "MonCalendrier")
                         .WithMany("listePenalites")
                         .HasForeignKey("IdPartie")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1732,7 +1599,7 @@ namespace ServiceLigueHockeyV2.Migrations
 
             modelBuilder.Entity("ServiceLigueHockey.Data.Models.PointeursBd", b =>
                 {
-                    b.HasOne("ServiceLigueHockey.Data.Models.PartieBd", "MonCalendrier")
+                    b.HasOne("ServiceLigueHockey.Data.Models.partieBd", "MonCalendrier")
                         .WithMany("listePointeurs")
                         .HasForeignKey("IdPartie")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1773,17 +1640,14 @@ namespace ServiceLigueHockeyV2.Migrations
 
             modelBuilder.Entity("ServiceLigueHockey.Data.Models.AnneeStatsBd", b =>
                 {
-                    b.Navigation("listeParties");
+                    b.Navigation("listeCalendrier");
                 });
 
-            modelBuilder.Entity("ServiceLigueHockey.Data.Models.ConferenceBd", b =>
+            modelBuilder.Entity("ServiceLigueHockey.Data.Models.partieBd", b =>
                 {
-                    b.Navigation("listeDivision");
-                });
+                    b.Navigation("listePenalites");
 
-            modelBuilder.Entity("ServiceLigueHockey.Data.Models.DivisionBd", b =>
-                {
-                    b.Navigation("listeEquipeBd");
+                    b.Navigation("listePointeurs");
                 });
 
             modelBuilder.Entity("ServiceLigueHockey.Data.Models.EquipeBd", b =>
@@ -1804,13 +1668,6 @@ namespace ServiceLigueHockeyV2.Migrations
                     b.Navigation("listePenalites");
 
                     b.Navigation("listeStatsJoueur");
-                });
-
-            modelBuilder.Entity("ServiceLigueHockey.Data.Models.PartieBd", b =>
-                {
-                    b.Navigation("listePenalites");
-
-                    b.Navigation("listePointeurs");
                 });
 
             modelBuilder.Entity("ServiceLigueHockey.Data.Models.PenalitesBd", b =>

@@ -32,7 +32,8 @@ namespace ServiceLigueHockey.Data.Controllers
                                   Ville = equipe.Ville,
                                   AnneeDebut = equipe.AnneeDebut,
                                   AnneeFin = equipe.AnneeFin,
-                                  EstDevenueEquipe = equipe.EstDevenueEquipe
+                                  EstDevenueEquipe = equipe.EstDevenueEquipe,
+                                  DivisionId = equipe.DivisionId
                               };
             return Ok(listeEquipe);
         }
@@ -55,7 +56,8 @@ namespace ServiceLigueHockey.Data.Controllers
                 Ville = equipeBd.Ville,
                 AnneeDebut = equipeBd.AnneeDebut,
                 AnneeFin = equipeBd.AnneeFin,
-                EstDevenueEquipe = equipeBd.EstDevenueEquipe
+                EstDevenueEquipe = equipeBd.EstDevenueEquipe,
+                DivisionId = equipeBd.DivisionId
             };
 
             return Ok(equipeDto);
@@ -94,7 +96,8 @@ namespace ServiceLigueHockey.Data.Controllers
                 Ville = equipeDto.Ville,
                 AnneeDebut = equipeDto.AnneeDebut,
                 AnneeFin = equipeDto.AnneeFin,
-                EstDevenueEquipe = equipeDto.EstDevenueEquipe
+                EstDevenueEquipe = equipeDto.EstDevenueEquipe,
+                DivisionId = equipeDto.DivisionId
             };
 
             _context.Entry(equipeBd).State = EntityState.Modified;
@@ -121,7 +124,7 @@ namespace ServiceLigueHockey.Data.Controllers
         // POST: api/Equipe
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<EquipeDto>> PostEquipeDto(EquipeDto equipe)
+        public async Task<ActionResult> PostEquipeDto(EquipeDto equipe)
         {
             var equipeBd = new EquipeBd
             {
@@ -130,13 +133,25 @@ namespace ServiceLigueHockey.Data.Controllers
                 Ville = equipe.Ville,
                 AnneeDebut = equipe.AnneeDebut,
                 AnneeFin = equipe.AnneeFin,
-                EstDevenueEquipe = equipe.EstDevenueEquipe
+                EstDevenueEquipe = equipe.EstDevenueEquipe,
+                DivisionId = equipe.DivisionId
             };
 
-            _context.equipe.Add(equipeBd);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.equipe.Add(equipeBd);
+                await _context.SaveChangesAsync();
 
-            equipe.Id = equipeBd.Id;
+                equipe.Id = equipeBd.Id;
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return Problem(ex.InnerException.Message);
+                }
+                return Problem(ex.StackTrace, null, 500, ex.Message, null);
+            }
 
             return CreatedAtAction("PostEquipeDto", equipe);
         }
