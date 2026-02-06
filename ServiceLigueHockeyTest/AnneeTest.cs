@@ -1,37 +1,57 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using ServiceLigueHockey.Data;
+using System.Net;
 
 namespace ServiceLigueHockeyTest;
 
 public class AnneeTest
 {
-    private IConfigurationRoot _root;
+    private HttpClient _httpClient;
     
     [SetUp]
     public void Setup()
     {
-        IConfigurationBuilder builder = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", false, true)
-            .AddUserSecrets("d5237f51-6255-4231-9182-31ed412a74f8");
-        _root = builder.Build();
+        // Initialize HttpClient for the API base address
+        // Use WebApplicationFactory for in-memory hosting for integration tests
+        // or point to a running API URL
+        _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5245/") };
     }
 
     [Test]
-    public void LectureAnnee()
+    public async Task LectureListeAnnee()
     {
-        var connectionString = this._root.GetConnectionString("mysqlConnection");
-        if(string.IsNullOrEmpty(connectionString))
-            throw new System.Exception("La chaine de connexion est vide.");
+        HttpResponseMessage response = await _httpClient.GetAsync("api/AnneeStats");
 
-        var options = new DbContextOptionsBuilder<ServiceLigueHockeyContext>()
-            .UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30)));
-            
-        Console.WriteLine("Salut le peuple!");
-        //var controller = new AnneeStats();
-        //var result = controller.Details(2) as ViewResult;
-        //Assert.AreEqual("Details", result.ViewName);
+        // Assert
+        Assert.That(response.StatusCode == HttpStatusCode.OK, "Le status n'est pas ok.");
+
+        string content = await response.Content.ReadAsStringAsync();
+        Assert.That(content != null, "La réponse ne devrait pas être nulle.");
+        
+        // Further assertions can be made on the JSON content
+        Console.Write(content);
 
         Assert.Pass();
+    }
+
+    [Test]
+    public async Task LectureAnnee()
+    {
+        HttpResponseMessage response = await _httpClient.GetAsync("api/AnneeStats/2017");
+
+        // Assert
+        Assert.That(response.StatusCode == HttpStatusCode.OK, "Le status n'est pas ok.");
+
+        string content = await response.Content.ReadAsStringAsync();
+        Assert.That(content != null, "La réponse ne devrait pas être nulle.");
+        
+        // Further assertions can be made on the JSON content
+        Console.Write(content);
+
+        Assert.Pass();
+    }
+
+    [TearDown]
+    public void JetteMoiAuxPoubelles()
+    {
+        _httpClient.Dispose();
     }
 }
