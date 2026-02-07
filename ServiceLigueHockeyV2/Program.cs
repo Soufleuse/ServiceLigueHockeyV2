@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using ServiceLigueHockey.Data;
-using Pomelo.EntityFrameworkCore.MySql.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,11 +38,16 @@ builder.Services.AddDbContext<ServiceLigueHockeyContext>(options => {
 builder.Services.AddCors(options => {
     options.AddPolicy(name: monAllowSpecificOrigin,
         builder => {
-            builder.WithOrigins("http://localhost:4900", "https://localhost:4900", "http://127.0.0.1:4900", "https://127.0.0.1:4900")
+            /*builder.WithOrigins("http://localhost:4900", "https://localhost:4900", "http://127.0.0.1:4900", "https://127.0.0.1:4900")
                 .WithHeaders("Content-Type")
-                .WithMethods("POST","GET","PUT","OPTIONS");
+                .WithMethods("POST","GET","PUT","OPTIONS");*/
+            builder.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
         });
 });
+
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 app.UseCors(monAllowSpecificOrigin);
