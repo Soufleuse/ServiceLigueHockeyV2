@@ -55,6 +55,8 @@ namespace ServiceLigueHockey.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ServiceLigueHockeyContext).Assembly);
         }
     }
 }

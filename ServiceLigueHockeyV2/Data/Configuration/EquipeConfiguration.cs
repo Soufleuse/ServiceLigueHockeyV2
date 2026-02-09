@@ -16,8 +16,8 @@ namespace ServiceLigueHockey.Data.Configuration
             builder.HasIndex(x => new { x.NomEquipe, x.Ville }).IsUnique();
             builder.HasMany("listeEquipeJoueur").WithOne("Equipe");
             builder.HasOne(x => x.division)
-                                           .WithMany(y => y.listeEquipeBd)
-                                           .OnDelete(DeleteBehavior.NoAction);
+                   .WithMany(y => y.listeEquipeBd)
+                   .OnDelete(DeleteBehavior.NoAction);
             builder.HasIndex(u => new { u.NomEquipe, u.Ville }).IsUnique();
 
             builder.HasData(

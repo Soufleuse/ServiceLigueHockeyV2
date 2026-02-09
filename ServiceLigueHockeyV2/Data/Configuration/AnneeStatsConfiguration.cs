@@ -10,6 +10,7 @@ namespace ServiceLigueHockey.Data.Configuration
         {
             builder.ToTable("AnneeStats");
             builder.HasKey(s => s.AnneeStats);
+            builder.Property(s => s.AnneeStats).IsRequired();
             builder.Property(e => e.AnneeStats).ValueGeneratedNever();
             builder.Property(e => e.DescnCourte).HasMaxLength(10);
             builder.Property(e => e.DescnLongue).HasMaxLength(200);
