@@ -1,5 +1,3 @@
-using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServiceLigueHockey.Data.Models {
@@ -9,10 +7,8 @@ namespace ServiceLigueHockey.Data.Models {
         public short AnneeStats { get; set; } = 1850;
 
         // Sert pour l'affichage dans les Combo boxes
-        [MaxLength(10)]
         public string DescnCourte { get; set; } = string.Empty;
 
-        [MaxLength(200)]
         public string DescnLongue { get; set; } = string.Empty;
 
         public virtual ICollection<CalendrierBd> listeParties { get; set; } = default!;

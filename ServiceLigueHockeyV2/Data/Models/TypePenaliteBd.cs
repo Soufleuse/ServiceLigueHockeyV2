@@ -13,7 +13,6 @@ namespace ServiceLigueHockey.Data.Models
         
         public int NbreMinutesPenalitesPourCetteInfraction { get; set; } = 2;
 
-        [MaxLength(100)]
         public string DescriptionPenalite { get; set; } = string.Empty;     // Mineur/Majeur/Inconduite de match
 
         public virtual ICollection<Penalite_TypePenaliteBd> listePenTypePen { get; set; } = default!;
