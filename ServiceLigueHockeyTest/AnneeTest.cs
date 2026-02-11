@@ -47,7 +47,7 @@ public class AnneeTest
         Assert.That(content != null, "La réponse ne devrait pas être nulle.");
         
         // Further assertions can be made on the JSON content
-        Console.Write(string.Format("content de LectureAnnee : {0}", content));
+        //Console.Write(string.Format("content de LectureAnnee : {0}", content));
 
         Assert.Pass();
     }
@@ -64,7 +64,7 @@ public class AnneeTest
                                                           anneeACreer,
                                                           new MediaTypeHeaderValue("application/json"));
         HttpResponseMessage response = await _httpClient.PostAsync("api/AnneeStats", pasContentDutout);
-        Console.WriteLine(string.Format("response de CreerAnnee_AnneeAbsente : ", response.ToString()));
+        //Console.WriteLine(string.Format("response de CreerAnnee_AnneeAbsente : ", response.ToString()));
         Assert.That(response.StatusCode == HttpStatusCode.Created, "Le status n'est pas Created.");
 
         Assert.Pass();
