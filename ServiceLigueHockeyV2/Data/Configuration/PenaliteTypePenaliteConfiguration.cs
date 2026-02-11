@@ -8,7 +8,6 @@ namespace ServiceLigueHockey.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Penalite_TypePenaliteBd> builder)
         {
-
             builder.ToTable("Penalite_TypePenalite");
             builder.HasKey("IdPenalite");
             builder.Property(e => e.IdPenalite).ValueGeneratedNever();

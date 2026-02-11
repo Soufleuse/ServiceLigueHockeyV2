@@ -10,10 +10,12 @@ namespace ServiceLigueHockey.Data.Configuration
         {
             builder.ToTable("Penalites");
             builder.HasKey("MomentDelaPenalite", "IdPartie");
-            builder.HasOne("MonCalendrier").WithMany("listePenalites")
-                                           .HasForeignKey("IdPartie");
-            builder.HasOne("joueurPenalise").WithMany("listePenalites")
-                                            .HasForeignKey("IdJoueurPenalise");
+            builder.HasOne("MonCalendrier")
+                   .WithMany("listePenalites")
+                   .HasForeignKey("IdPartie");
+            builder.HasOne("joueurPenalise")
+                   .WithMany("listePenalites")
+                   .HasForeignKey("IdJoueurPenalise");
         }
     }
 }
