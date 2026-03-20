@@ -30,7 +30,7 @@ jobs:
 
       # 5. Tests (si tu en as)
       - name: Test
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test --configuration Release --no-build --verbosity normal
 
       # 6. Publish
       - name: Publish
