@@ -1,0 +1,50 @@
+name: Deploy .NET app to Azure
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout du code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Setup .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # 3. Restore des dépendances
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # 4. Build
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      # 5. Tests (si tu en as)
+#      - name: Test
+#        run: dotnet test --configuration Release --no-build --verbosity normal
+
+      # 6. Publish
+      - name: Publish
+        run: dotnet publish --configuration Release --output ./publish
+
+      # 7. Login Azure ← section ajoutée
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # 8. Déploiement vers Azure ← section ajoutée
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'ligue-hockey'
+          package: './publish'
