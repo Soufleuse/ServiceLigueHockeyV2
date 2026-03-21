@@ -22,11 +22,11 @@ jobs:
 
       # 3. Restore des dépendances
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ./ServiceLigueHockeyV2/ServiceLigueHockeyV2.csproj
 
       # 4. Build
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build ./ServiceLigueHockeyV2/ServiceLigueHockeyV2.csproj --configuration Release --no-restore
 
       # 5. Tests (si tu en as)
 #      - name: Test
@@ -34,7 +34,7 @@ jobs:
 
       # 6. Publish
       - name: Publish
-        run: dotnet publish --configuration Release --output ./publish
+        run: dotnet publish ./ServiceLigueHockeyV2/ServiceLigueHockeyV2.csproj --configuration Release --output ./publish
 
       # 7. Login Azure ← section ajoutée
       - name: Login to Azure
