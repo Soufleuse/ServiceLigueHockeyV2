@@ -53,17 +53,17 @@ var app = builder.Build();
 app.UseCors(monAllowSpecificOrigin);
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    Console.WriteLine("dev");
+//if (app.Environment.IsDevelopment())
+//{
+//    Console.WriteLine("dev");
     app.UseSwagger();
     app.UseSwaggerUI();
-}
-else
-{
-    Console.WriteLine("prod");
+//}
+//else
+//{
+//    Console.WriteLine("prod");
     //app.UseHttpsRedirection();
-}
+//}
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
