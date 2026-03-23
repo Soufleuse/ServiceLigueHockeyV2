@@ -18,26 +18,59 @@ namespace ServiceLigueHockey.Data.Controllers
         }
 
         // GET: api/Partie
-        [HttpGet]
-        public ActionResult<IQueryable<PartieDto>> GetPartieDto()
+        [HttpGet("dateALire")]
+        public async Task<ActionResult<IEnumerable<PartieDto>>> GetPartieDto(DateTime dateALire)
         {
-            var listeParties = from MonCalendrier in _context.parties
-                               select new PartieDto
-                               {
-                                    IdPartie = MonCalendrier.IdPartie,
-                                    IdEquipeHote = MonCalendrier.IdEquipeHote,
-                                    IdEquipeVisiteuse = MonCalendrier.IdEquipeVisiteuse,
-                                    AnneeStats = MonCalendrier.AnneeStats,
-                                    DatePartieJouee = MonCalendrier.DatePartieJouee,
-                                    NbreButsComptesParHote = MonCalendrier.NbreButsComptesParHote,
-                                    NbreButsComptesParVisiteur = MonCalendrier.NbreButsComptesParVisiteur,
-                                    AFiniEnProlongation = MonCalendrier.AFiniEnProlongation,
-                                    AFiniEnTirDeBarrage = MonCalendrier.AFiniEnTirDeBarrage,
-                                    EstUnePartieDeSerie = MonCalendrier.EstUnePartieDeSerie,
-                                    EstUnePartiePresaison=MonCalendrier.EstUnePartiePresaison,
-                                    EstUnePartieSaisonReguliere = MonCalendrier.EstUnePartieSaisonReguliere,
-                                    SommairePartie = MonCalendrier.SommairePartie
-                               };
+            var dateMoinsUnJour = dateALire.AddDays(-1);
+            var datePlusUnJour = dateALire.AddDays(1);
+
+            var listeParties = await (from MonCalendrier in _context.parties
+                                      where MonCalendrier.DatePartieJouee >= dateMoinsUnJour
+                                         && MonCalendrier.DatePartieJouee <= datePlusUnJour
+                                      select new PartieDto
+                                      {
+                                          IdPartie = MonCalendrier.IdPartie,
+                                          IdEquipeHote = MonCalendrier.IdEquipeHote,
+                                          IdEquipeVisiteuse = MonCalendrier.IdEquipeVisiteuse,
+                                          AnneeStats = MonCalendrier.AnneeStats,
+                                          DatePartieJouee = MonCalendrier.DatePartieJouee,
+                                          NbreButsComptesParHote = MonCalendrier.NbreButsComptesParHote,
+                                          NbreButsComptesParVisiteur = MonCalendrier.NbreButsComptesParVisiteur,
+                                          AFiniEnProlongation = MonCalendrier.AFiniEnProlongation,
+                                          AFiniEnTirDeBarrage = MonCalendrier.AFiniEnTirDeBarrage,
+                                          EstUnePartieDeSerie = MonCalendrier.EstUnePartieDeSerie,
+                                          EstUnePartiePresaison=MonCalendrier.EstUnePartiePresaison,
+                                          EstUnePartieSaisonReguliere = MonCalendrier.EstUnePartieSaisonReguliere,
+                                          SommairePartie = MonCalendrier.SommairePartie
+                                      }).ToListAsync();
+
+            return Ok(listeParties);
+        }
+
+        // GET: api/Partie
+        [HttpGet("listePourUneEquipe/{idEquipe}/{anneeStats}")]
+        public async Task<ActionResult<IEnumerable<PartieDto>>> GetPartiePourUneEquipeDto(int idEquipe, int anneeStats)
+        {
+            var listeParties = await (from MonCalendrier in _context.parties
+                                      where MonCalendrier.AnneeStats == anneeStats
+                                         && (MonCalendrier.IdEquipeHote == idEquipe ||
+                                             MonCalendrier.IdEquipeVisiteuse == idEquipe)
+                                      select new PartieDto
+                                      {
+                                          IdPartie = MonCalendrier.IdPartie,
+                                          IdEquipeHote = MonCalendrier.IdEquipeHote,
+                                          IdEquipeVisiteuse = MonCalendrier.IdEquipeVisiteuse,
+                                          AnneeStats = MonCalendrier.AnneeStats,
+                                          DatePartieJouee = MonCalendrier.DatePartieJouee,
+                                          NbreButsComptesParHote = MonCalendrier.NbreButsComptesParHote,
+                                          NbreButsComptesParVisiteur = MonCalendrier.NbreButsComptesParVisiteur,
+                                          AFiniEnProlongation = MonCalendrier.AFiniEnProlongation,
+                                          AFiniEnTirDeBarrage = MonCalendrier.AFiniEnTirDeBarrage,
+                                          EstUnePartieDeSerie = MonCalendrier.EstUnePartieDeSerie,
+                                          EstUnePartiePresaison=MonCalendrier.EstUnePartiePresaison,
+                                          EstUnePartieSaisonReguliere = MonCalendrier.EstUnePartieSaisonReguliere,
+                                          SommairePartie = MonCalendrier.SommairePartie
+                                      }).ToListAsync();
 
             return Ok(listeParties);
         }
