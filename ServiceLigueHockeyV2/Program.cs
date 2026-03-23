@@ -51,6 +51,11 @@ builder.Services.AddHttpClient();
 
 var app = builder.Build();
 app.UseCors(monAllowSpecificOrigin);
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ServiceLigueHockeyContext>();
+    db.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
