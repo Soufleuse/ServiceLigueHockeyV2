@@ -63,10 +63,19 @@ namespace ServiceLigueHockeyV2
 
             var app = builder.Build();
             app.UseCors(monAllowSpecificOrigin);
-            using (var scope = app.Services.CreateScope())
+
+            try
             {
-                var db = scope.ServiceProvider.GetRequiredService<ServiceLigueHockeyContext>();
-                db.Database.Migrate();
+                using (var scope = app.Services.CreateScope())
+                {
+                    var db = scope.ServiceProvider.GetRequiredService<ServiceLigueHockeyContext>();
+                    db.Database.Migrate();
+                }
+            }
+            catch (Exception ex)
+            {
+                var logger = app.Services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "Erreur lors des migrations - app démarre quand même");
             }
 
             // Utilise le port Azure si disponible, sinon 5298 en local
