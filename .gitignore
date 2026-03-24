@@ -354,3 +354,4 @@ app/
 *.bck
 *-bck.*
 messecrets.json
+!ServiceLigueHockeyV2/logs/
