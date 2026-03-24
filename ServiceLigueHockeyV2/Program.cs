@@ -78,7 +78,11 @@ namespace ServiceLigueHockeyV2
             //{
             //    Console.WriteLine("dev");
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ligue Hockey API V1");
+                    c.RoutePrefix = string.Empty; // ← Swagger accessible à la racine "/"
+                });
             //}
             //else
             //{
