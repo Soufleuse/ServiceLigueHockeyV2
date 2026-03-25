@@ -89,8 +89,8 @@ namespace ServiceLigueHockeyV2
             }
 
             // Utilise le port Azure si disponible, sinon 5298 en local
-            //var port = Environment.GetEnvironmentVariable("PORT") ?? "5298";
-            //builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+            var port = Environment.GetEnvironmentVariable("PORT") ?? "5298";
+            builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
             // Configure the HTTP request pipeline.
             //if (app.Environment.IsDevelopment())
