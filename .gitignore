@@ -353,5 +353,6 @@ MigrationBackup/
 app/
 *.bck
 *-bck.*
+az-delete-conn-string
 messecrets.json
 !ServiceLigueHockeyV2/logs/
