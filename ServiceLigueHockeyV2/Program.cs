@@ -100,9 +100,7 @@ namespace ServiceLigueHockeyV2
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ligue Hockey API V1");
-                    // ou swagger à la place de empty
-                    //c.RoutePrefix = string.Empty; // ← Swagger accessible à la racine "/"
-                    c.RoutePrefix = "swagger"; // ← Swagger accessible à /swagger
+                    c.RoutePrefix = string.Empty; // ← Swagger accessible à la racine "/"
                 });
             //}
             //else
