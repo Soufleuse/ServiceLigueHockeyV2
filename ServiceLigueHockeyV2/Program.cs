@@ -43,7 +43,17 @@ namespace ServiceLigueHockeyV2
                     throw new System.Exception("La chaine de connexion est vide.");
                 }
 
-                options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30)));
+                options.UseMySql(
+                    builder.Configuration.GetConnectionString("mysqlConnection"),
+                    new MySqlServerVersion(new Version(8, 0, 0)),
+                    mySqlOptions => mySqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 3,
+                        maxRetryDelay: TimeSpan.FromSeconds(10),
+                        errorNumbersToAdd: null
+                    )
+                );
+
+                //options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30)));
                 //options.UseSqlServer(connectionString);
             });
 
