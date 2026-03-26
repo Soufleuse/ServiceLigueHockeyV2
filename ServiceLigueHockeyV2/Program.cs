@@ -95,7 +95,7 @@ namespace ServiceLigueHockeyV2
             // Configure the HTTP request pipeline.
             //if (app.Environment.IsDevelopment())
             //{
-            //    Console.WriteLine("dev");
+                //Console.WriteLine("dev");
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
@@ -105,7 +105,7 @@ namespace ServiceLigueHockeyV2
             //}
             //else
             //{
-            //    Console.WriteLine("prod");
+                //Console.WriteLine("prod");
                 //app.UseHttpsRedirection();
             //}
 
