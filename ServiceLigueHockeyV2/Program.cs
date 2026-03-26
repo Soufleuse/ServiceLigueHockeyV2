@@ -115,11 +115,10 @@ namespace ServiceLigueHockeyV2
             });
 
             app.UseAuthentication();
-
             app.UseAuthorization();
 
+            app.MapGet("/health", () => Results.Ok("healthy"));
             app.MapControllers();
-
             app.Run();
         }
 
