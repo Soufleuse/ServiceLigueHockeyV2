@@ -79,9 +79,11 @@ namespace ServiceLigueHockeyV2
 
             builder.Services.AddHttpClient();
 
-            // Utilise le port Azure si disponible, sinon 5298 en local
-            var port = Environment.GetEnvironmentVariable("PORT") ?? "5298";
-            builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+            // Seulement si la variable Azure n'est pas déjà définie
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ASPNETCORE_URLS")))
+            {
+                builder.WebHost.UseUrls("http://0.0.0.0:5298");
+            }
 
             var app = builder.Build();
             
