@@ -1,34 +1,50 @@
-name: Azure Static Web Apps CI/CD
+name: Deploy .NET app to Azure
 
 on:
   push:
     branches:
       - master
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - master
 
 jobs:
-  build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+  build-and-deploy:
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
+
     steps:
-      - uses: actions/checkout@v3
+      # 1. Checkout du code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Setup .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
-          submodules: true
-          lfs: false
-      - name: Build And Deploy
-        id: builddeploy
-        uses: Azure/static-web-apps-deploy@v1
+          dotnet-version: '8.0.x'
+
+      # 3. Restore des dépendances
+      - name: Restore dependencies
+        run: dotnet restore ./ServiceLigueHockeyV2/ServiceLigueHockeyV2.csproj
+
+      # 4. Build
+      - name: Build
+        run: dotnet build ./ServiceLigueHockeyV2/ServiceLigueHockeyV2.csproj --configuration Release --no-restore
+
+      # 5. Tests (si tu en as)
+#      - name: Test
+#        run: dotnet test --configuration Release --no-build --verbosity normal
+
+      # 6. Publish
+      - name: Publish
+        run: dotnet publish ./ServiceLigueHockeyV2/ServiceLigueHockeyV2.csproj --configuration Release --output ./publish
+
+      # 7. Login Azure ← section ajoutée
+      - name: Login to Azure
+        uses: azure/login@v2
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_HAPPY_MUD_0DEEEAA0F }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
-          action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/" # App source code path
-          api_location: "api" # Api source code path - optional
-          output_location: "dist/ligue-hockey/browser" # Built app content directory - optional
-          ###### End of Repository/Build Configurations ######
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # 8. Déploiement vers Azure ← section ajoutée
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'ServiceLigueHockeyV2'
+          package: './publish'
