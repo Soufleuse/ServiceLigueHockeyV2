@@ -17,6 +17,7 @@ namespace ServiceLigueHockeyV2
             builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
 
             string monAllowSpecificOrigin = "monAllowSpecificOrigin";
+            string allowSWA = "AllowSWA";
 
             // Add services to the container.
 
@@ -67,12 +68,30 @@ namespace ServiceLigueHockeyV2
                             .AllowAnyHeader()
                             .AllowAnyMethod();
                     });
+
+                options.AddPolicy(name: allowSWA, policy =>
+                {
+                    policy.WithOrigins("https://happy-mud-0deeeaa0f.6.azurestaticapps.net")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
             });
 
             builder.Services.AddHttpClient();
 
+            // Utilise le port Azure si disponible, sinon 5298 en local
+            var port = Environment.GetEnvironmentVariable("PORT") ?? "5298";
+            builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
             var app = builder.Build();
+            
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             app.UseCors(monAllowSpecificOrigin);
+            //app.UseCors(allowSWA);
 
             try
             {
@@ -88,9 +107,8 @@ namespace ServiceLigueHockeyV2
                 logger.LogError(ex, "Erreur lors des migrations - app démarre quand même");
             }
 
-            // Utilise le port Azure si disponible, sinon 5298 en local
-            var port = Environment.GetEnvironmentVariable("PORT") ?? "5298";
-            builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             // Configure the HTTP request pipeline.
             //if (app.Environment.IsDevelopment())
@@ -108,14 +126,6 @@ namespace ServiceLigueHockeyV2
                 //Console.WriteLine("prod");
                 //app.UseHttpsRedirection();
             //}
-
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
-
-            app.UseAuthentication();
-            app.UseAuthorization();
 
             app.MapGet("/health", () => Results.Ok("healthy"));
             app.MapControllers();
