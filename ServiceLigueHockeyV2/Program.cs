@@ -86,6 +86,10 @@ namespace ServiceLigueHockeyV2
             }
 
             var app = builder.Build();
+
+            var logger = app.Logger;
+            logger.LogInformation("Démarrage de l'application sur {env}", app.Environment.EnvironmentName);
+            logger.LogInformation("URL de l'application : {url}", Environment.GetEnvironmentVariable("ASPNETCORE_URLS") ?? "ASPNETCORE_URLS non défini");
             
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
