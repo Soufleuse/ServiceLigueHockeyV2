@@ -80,10 +80,10 @@ namespace ServiceLigueHockeyV2
             builder.Services.AddHttpClient();
 
             // Seulement si la variable Azure n'est pas déjà définie
-            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ASPNETCORE_URLS")))
-            {
-                builder.WebHost.UseUrls("http://0.0.0.0:5298");
-            }
+            //if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ASPNETCORE_URLS")))
+            //{
+                //builder.WebHost.UseUrls("http://0.0.0.0:5298");
+            //}
 
             var app = builder.Build();
 
