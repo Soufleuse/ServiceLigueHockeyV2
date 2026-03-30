@@ -350,6 +350,8 @@ MigrationBackup/
 .ionide/
 
 # Mes ajouts
+.env
+mysql-data/*
 app/
 *.bck
 *-bck.*

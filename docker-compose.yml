@@ -1,0 +1,70 @@
+services:
+  # Base de données MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-ServiceLigueHockeyV2-dev
+    hostname: mysql
+    ports:
+      - "3310:3306"
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: LigueHockey
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      # Base de données stockée sur l'hôte pour persistance
+      - ./mysql-data:/var/lib/mysql
+      # Scripts d'initialisation (optionnel)
+      #- ./mysql-init:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # API .NET
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: LigueHockey-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://0.0.0.0:5298
+      ConnectionStrings__mysqlConnection: ${MYSQL_CONNECTION_STRING}
+    ports:
+      - "5299:5298"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5298/api/parametres/TypeUtilisateurs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # phpMyAdmin pour l'administration
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: LigueHockey-phpmyadmin
+    environment:
+      PMA_HOST: ${PMA_HOST}
+      PMA_USER: ${PMA_USER}
+      PMA_PASSWORD: ${PMA_PASSWORD}
+    ports:
+      - "8280:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  default:
+    name: LigueHockey-network

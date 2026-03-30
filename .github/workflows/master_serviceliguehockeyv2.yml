@@ -6,7 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - ServiceLigueHockeyV2
 on:
   push:
     branches:
-      - master
+      - continuer-creation-tests
   workflow_dispatch:
 
 jobs:
@@ -51,9 +51,7 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_9A9ED56259844608AACD44084DCEE277 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C650547CCCB34D8F847FABCD3691C257 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_7314F235201D4D79B676DBFBC8A571A7 }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
