@@ -1,7 +1,7 @@
 # Dockerfile multi-stage pour SQL Server + API .NET
 
 # Stage 1: Build de l'application .NET
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
 # Copier le fichier projet et restaurer les dépendances
@@ -16,7 +16,7 @@ RUN dotnet build ServiceLigueHockeyV2/ServiceLigueHockeyV2.csproj -c Release -o 
 RUN dotnet publish ServiceLigueHockeyV2/ServiceLigueHockeyV2.csproj -c Release -o /app/publish
 
 # Image finale - runtime seulement
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0.7 AS final
 WORKDIR /app
 
 # Installer curl pour le healthcheck
@@ -27,7 +27,7 @@ COPY --from=build /app/publish .
 
 # Copier les fichiers de configuration
 COPY ServiceLigueHockeyV2/appsettings.json ./appsettings.json
-COPY ServiceLigueHockeyV2/appsettings.Development.json ./appsettings.Development.json
+COPY ServiceLigueHockeyV2/appsettings.docker-dev.json ./appsettings.Development.json
 
 # Exposer le port
 EXPOSE 5298
